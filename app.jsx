@@ -748,8 +748,6 @@ function CheckoutScreen({ subtotal, coneCount, orderInfo, setOrderInfo, delivery
             title="Kartou online" sub="Visa / Mastercard" />
           <OptionRow checked={payment === 'transfer'} onClick={() => setPayment('transfer')}
             title="Bankový prevod" sub="QR kód v e-maile" />
-          <OptionRow checked={payment === 'cod'} onClick={() => setPayment('cod')}
-            title="Dobierka" sub="+1 €" />
         </div>
       </div>
 

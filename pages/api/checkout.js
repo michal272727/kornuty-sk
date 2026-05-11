@@ -16,8 +16,7 @@ export default async function handler(req, res) {
     }, 0);
 
     const deliveryFee = delivery === 'pickup' ? 0 : 4.00;
-    const codFee = payment === 'cod' ? 1.00 : 0;
-    const total = (subtotal * coneCount + deliveryFee + codFee) * 100; // in cents
+    const total = (subtotal * coneCount + deliveryFee) * 100; // in cents
 
     // Create line items for Stripe
     const line_items = [
@@ -42,19 +41,6 @@ export default async function handler(req, res) {
             name: 'Doručenie kuriérom',
           },
           unit_amount: Math.round(deliveryFee * 100),
-        },
-        quantity: 1,
-      });
-    }
-
-    if (codFee > 0) {
-      line_items.push({
-        price_data: {
-          currency: 'eur',
-          product_data: {
-            name: 'Poplatek dobierky',
-          },
-          unit_amount: Math.round(codFee * 100),
         },
         quantity: 1,
       });
