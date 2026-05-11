@@ -1,0 +1,113 @@
+{
+  "_comment": "Mapa ingrediencia ID -> cesta k obrázku alebo URL. Prázdny string = použije sa SVG ilustrácia. Cesty sú relatívne k Kornuty.html. Príklady: 'images/ananas.jpg', 'https://example.com/photo.png', alebo 'uploads/2024-12/foto.jpg'.",
+
+  "ovocie": {
+    "ananas": "",
+    "banan_chips": "",
+    "brusnice": "",
+    "datle": "",
+    "figy": "",
+    "goji": "",
+    "hrozno_zlate": "",
+    "hrozno_sult": "",
+    "ibistek": "",
+    "kokos_chips": "",
+    "marhule_nes": "",
+    "marhule": "",
+    "papaja": "",
+    "slivka": "",
+    "zazvor": "",
+    "cerne": ""
+  },
+
+  "orechy": {
+    "arasid": "",
+    "kesu": "",
+    "lieskove": "",
+    "makadam": "",
+    "mandle": "",
+    "mandle_b": "",
+    "para": "",
+    "pekan": "",
+    "pinia": "",
+    "pistacie": "",
+    "vlasske": ""
+  },
+
+  "cokolada": {
+    "arasid_ml": "",
+    "arasid_jog": "",
+    "brusn_h": "",
+    "cokoocka": "",
+    "hrozno_jog": "",
+    "hrozno_ml": "",
+    "kavove": "",
+    "kesu_h": "",
+    "liesk_ml": "",
+    "liesk_sk": "",
+    "mandle_ml": "",
+    "mandle_sk": "",
+    "mandle_kar": "",
+    "mandle_h": "",
+    "mandle_jah": "",
+    "ovoc_zele": "",
+    "slnecn_c": "",
+    "visne_h": ""
+  },
+
+  "cukrovinky": {
+    "broskyne": "",
+    "cola": "",
+    "cer_zele": "",
+    "karamel": "",
+    "ovocny_k": "",
+    "kysle_hr": "",
+    "kysle_hus": "",
+    "kysle_hv": "",
+    "kysle_p": "",
+    "malina_z": "",
+    "mega_med": "",
+    "melon": "",
+    "mini_med": "",
+    "mini_zv": "",
+    "neon": "",
+    "ostr": "",
+    "ostr_p": "",
+    "ovoc_zele_v": "",
+    "ovo": "",
+    "pendrek": "",
+    "sovicky": "",
+    "spuntici": "",
+    "tropical": "",
+    "zuby": "",
+    "zabky": "",
+    "cerviky": "",
+    "hady": "",
+    "vajicka": ""
+  },
+
+  "slane": {
+    "aras_was": "",
+    "cvikla": "",
+    "chia": "",
+    "sezam": "",
+    "kesu_p": "",
+    "lan": "",
+    "soja": "",
+    "mix": "",
+    "zeler": ""
+  },
+
+  "semienka": {
+    "slnecn": "",
+    "tekvica": ""
+  },
+
+  "mrazom": {
+    "dracie": "",
+    "figy_m": "",
+    "jahody_m": "",
+    "maliny_m": "",
+    "mango_m": ""
+  }
+}
