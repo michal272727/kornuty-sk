@@ -40,6 +40,7 @@ function App() {
   const [screen, setScreen] = useState('welcome');
   const [cart, setCart] = useState([]); // [{ id, weight }]
   const [capacityTier, setCapacityTier] = useState(0);
+  const [deliveryMethod, setDeliveryMethod] = useState(LS.get('deliveryMethod', 'courier'));
 
   // Restore from localStorage after hydration
   useEffect(() => {
@@ -67,9 +68,8 @@ function App() {
         }).catch(err => console.error('Email send error:', err));
         // Clear URL
         window.history.replaceState({}, '', '/');
-        // Reset cart
-        LS.set('cart', []);
-        setCart([]);
+        // Keep cart for display, but mark as completed
+        LS.set('completedOrder', true);
       }
     }
   }, []);
@@ -86,6 +86,7 @@ function App() {
   useEffect(() => LS.set('cart', cart), [cart]);
   useEffect(() => LS.set('capacityTier', capacityTier), [capacityTier]);
   useEffect(() => LS.set('orderInfo', orderInfo), [orderInfo]);
+  useEffect(() => LS.set('deliveryMethod', deliveryMethod), [deliveryMethod]);
 
   // Cart helpers
   const cartItems = useMemo(() => {
@@ -284,6 +285,8 @@ function App() {
             coneCount={coneCount}
             orderInfo={orderInfo}
             setOrderInfo={setOrderInfo}
+            deliveryMethod={deliveryMethod}
+            setDeliveryMethod={setDeliveryMethod}
             onBack={() => setScreen('cart')}
             onComplete={() => setScreen('success')}
             direction={direction}
@@ -295,9 +298,12 @@ function App() {
           <SuccessScreen
             cartItems={cartItems}
             coneCount={coneCount}
-            total={subtotal * coneCount + window.SHIPPING}
+            subtotal={subtotal * coneCount}
+            total={subtotal * coneCount + (deliveryMethod === 'pickup' ? 0 : window.SHIPPING)}
+            shipping={deliveryMethod === 'pickup' ? 0 : window.SHIPPING}
+            deliveryMethod={deliveryMethod}
             orderInfo={orderInfo}
-            onRestart={() => { clearCart(); setScreen('welcome'); }}
+            onRestart={() => { setCart([]); LS.set('cart', []); setScreen('welcome'); setDeliveryMethod('courier'); }}
             direction={direction}
           />
         )}
@@ -659,11 +665,10 @@ function CartScreen({ cart, cartItems, totalWeight, subtotal, capacityTier, upda
 }
 
 // ============ CHECKOUT ============
-function CheckoutScreen({ subtotal, coneCount, orderInfo, setOrderInfo, onBack, onComplete, direction, cart, cartItems }) {
-  const [delivery, setDelivery] = useState('courier');
+function CheckoutScreen({ subtotal, coneCount, orderInfo, setOrderInfo, deliveryMethod, setDeliveryMethod, onBack, onComplete, direction, cart, cartItems }) {
   const [payment, setPayment] = useState('card');
   const [loading, setLoading] = useState(false);
-  const total = subtotal + window.SHIPPING;
+  const total = subtotal + (deliveryMethod === 'pickup' ? 0 : window.SHIPPING);
 
   const update = (k, v) => setOrderInfo({ ...orderInfo, [k]: v });
 
@@ -680,7 +685,7 @@ function CheckoutScreen({ subtotal, coneCount, orderInfo, setOrderInfo, onBack, 
         body: JSON.stringify({
           cartItems,
           coneCount,
-          delivery,
+          delivery: deliveryMethod,
           payment,
           orderInfo,
         }),
@@ -730,9 +735,9 @@ function CheckoutScreen({ subtotal, coneCount, orderInfo, setOrderInfo, onBack, 
       <div className="form-section">
         <h3>Doručenie</h3>
         <div className="option-list">
-          <OptionRow checked={delivery === 'courier'} onClick={() => setDelivery('courier')}
+          <OptionRow checked={deliveryMethod === 'courier'} onClick={() => setDeliveryMethod('courier')}
             title="Kuriér" sub="1–3 pracovné dni" price="4.00 €" />
-          <OptionRow checked={delivery === 'pickup'} onClick={() => setDelivery('pickup')}
+          <OptionRow checked={deliveryMethod === 'pickup'} onClick={() => setDeliveryMethod('pickup')}
             title="Osobný odber" sub="Krupina" price="zdarma" />
         </div>
       </div>
@@ -756,11 +761,11 @@ function CheckoutScreen({ subtotal, coneCount, orderInfo, setOrderInfo, onBack, 
         </div>
         <div className="summary-row">
           <span>Doručenie</span>
-          <span>{delivery === 'pickup' ? '0.00' : window.SHIPPING.toFixed(2)} €</span>
+          <span>{deliveryMethod === 'pickup' ? '0.00' : window.SHIPPING.toFixed(2)} €</span>
         </div>
         <div className="summary-row total">
           <span>Spolu</span>
-          <span>{(subtotal + (delivery === 'pickup' ? 0 : window.SHIPPING)).toFixed(2)} €</span>
+          <span>{total.toFixed(2)} €</span>
         </div>
       </div>
 
@@ -813,7 +818,7 @@ function OptionRow({ checked, onClick, title, sub, price }) {
 }
 
 // ============ SUCCESS ============
-function SuccessScreen({ cartItems, coneCount, total, orderInfo, onRestart, direction }) {
+function SuccessScreen({ cartItems, coneCount, subtotal, total, shipping, deliveryMethod, orderInfo, onRestart, direction }) {
   const orderNum = useMemo(() => 'KOR-' + Math.floor(Math.random() * 90000 + 10000), []);
   return (
     <div className="screen success" data-screen-label="Success">
@@ -839,11 +844,51 @@ function SuccessScreen({ cartItems, coneCount, total, orderInfo, onRestart, dire
           Číslo objednávky <strong>#{orderNum}</strong>.<br />
           Detaily sme poslali na <strong>{orderInfo.email || 'e-mail'}</strong>.
         </p>
-        <div className="success-stats">
-          <div><span>{coneCount}×</span> kornút</div>
-          <div><span>{total.toFixed(2)} €</span> spolu</div>
-          <div><span>~3 dni</span> doručenie</div>
+
+        <div className="success-order-summary">
+          <h3>Vaša objednávka</h3>
+
+          <div className="order-items">
+            {cartItems.map(item => (
+              <div key={item.id} className="order-item">
+                <div className="order-item-name">{item.name}</div>
+                <div className="order-item-detail">{item.weight}g × {coneCount}</div>
+                <div className="order-item-price">{(item.price * item.weight / item.unit * coneCount).toFixed(2)} €</div>
+              </div>
+            ))}
+          </div>
+
+          <div className="order-breakdown">
+            <div className="breakdown-row">
+              <span>Spolu za kornúty</span>
+              <span>{subtotal.toFixed(2)} €</span>
+            </div>
+            <div className="breakdown-row">
+              <span>Doručenie ({deliveryMethod === 'pickup' ? 'osobný odber' : 'kuriér'})</span>
+              <span>{shipping.toFixed(2)} €</span>
+            </div>
+            <div className="breakdown-row total">
+              <span>Celkem</span>
+              <span>{total.toFixed(2)} €</span>
+            </div>
+          </div>
+
+          <div className="order-meta">
+            <div className="meta-item">
+              <span className="meta-label">Jméno</span>
+              <span>{orderInfo.name}</span>
+            </div>
+            <div className="meta-item">
+              <span className="meta-label">Doručení</span>
+              <span>
+                {deliveryMethod === 'pickup'
+                  ? 'Osobní odběr v Krupině'
+                  : `Kuriér (1–3 pracovní dni)`}
+              </span>
+            </div>
+          </div>
         </div>
+
         <button className="btn-primary btn-lg" onClick={onRestart}>Nový kornút</button>
       </div>
     </div>

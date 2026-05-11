@@ -1,8 +1,10 @@
-const nodemailer = require('nodemailer');
-const Stripe = require('stripe');
-const { PDFDocument, rgb } = require('pdf-lib');
+import nodemailer from 'nodemailer';
+import Stripe from 'stripe';
+import { PDFDocument, rgb } from 'pdf-lib';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+  apiVersion: '2023-10-16',
+});
 
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,

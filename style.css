@@ -947,6 +947,101 @@ input, textarea { font: inherit; color: inherit; }
 }
 .dir-editorial .success-stats span { font-family: 'Fraunces', serif; font-weight: 600; }
 
+.success-order-summary {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  margin: 16px 0;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.success-order-summary h3 {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-mute);
+  margin: 0 0 12px 0;
+}
+.order-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+.order-item {
+  display: grid;
+  grid-template-columns: 1fr 80px 60px;
+  gap: 8px;
+  align-items: center;
+  font-size: 13px;
+}
+.order-item-name {
+  font-weight: 600;
+  color: var(--ink);
+}
+.order-item-detail {
+  font-size: 12px;
+  color: var(--ink-mute);
+  text-align: center;
+}
+.order-item-price {
+  font-weight: 600;
+  text-align: right;
+  color: var(--accent);
+}
+.order-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+.breakdown-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+.breakdown-row span:last-child {
+  font-weight: 600;
+}
+.breakdown-row.total {
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 14px;
+}
+.breakdown-row.total span:last-child {
+  color: var(--accent);
+  font-size: 16px;
+}
+.order-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 13px;
+}
+.meta-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.meta-label {
+  color: var(--ink-mute);
+  font-weight: 600;
+}
+.meta-item span:last-child {
+  color: var(--ink);
+  text-align: right;
+  flex: 1;
+  margin-left: 8px;
+}
+
 /* ============ DIRECTION OVERRIDES ============ */
 
 /* Editorial: lots of whitespace, serif, less color */
