@@ -106,10 +106,22 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Missing sessionId' });
     }
 
+    // Debug: check environment
+    if (!process.env.STRIPE_SECRET_KEY) {
+      console.error('STRIPE_SECRET_KEY not found in environment');
+      return res.status(500).json({ error: 'STRIPE_SECRET_KEY not configured' });
+    }
+
     // Fetch session from Stripe
-    const session = await stripe.checkout.sessions.retrieve(sessionId, {
-      expand: ['line_items'],
-    });
+    let session;
+    try {
+      session = await stripe.checkout.sessions.retrieve(sessionId, {
+        expand: ['line_items'],
+      });
+    } catch (stripeError) {
+      console.error('Stripe error:', stripeError.message);
+      return res.status(500).json({ error: 'Stripe API error: ' + stripeError.message });
+    }
 
     const lineItems = session.line_items?.data || [];
     const customerEmail = session.customer_email;

@@ -42,37 +42,36 @@ function App() {
   const [capacityTier, setCapacityTier] = useState(0);
   const [deliveryMethod, setDeliveryMethod] = useState(LS.get('deliveryMethod', 'courier'));
 
-  // Restore from localStorage after hydration
+  // Restore from localStorage after hydration + handle Stripe redirect
   useEffect(() => {
-    if (hydrated) {
+    if (hydrated && typeof window !== 'undefined') {
       const savedScreen = LS.get('screen', 'welcome');
       const savedCart = LS.get('cart', []);
       const savedTier = LS.get('capacityTier', 0);
-      if (savedScreen !== 'welcome') setScreen(savedScreen);
+
+      // Restore state first
       if (savedCart.length > 0) setCart(savedCart);
       if (savedTier > 0) setCapacityTier(savedTier);
-    }
-  }, [hydrated]);
 
-  // Handle Stripe success redirect
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
+      // Then check for Stripe redirect
       const params = new URLSearchParams(window.location.search);
       const sessionId = params.get('session_id');
       if (sessionId) {
         setScreen('success');
+        // Clean URL immediately
+        window.history.replaceState({}, '', '/');
+        // Send email
         fetch('/api/send-email', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ sessionId }),
         }).catch(err => console.error('Email send error:', err));
-        // Clear URL
-        window.history.replaceState({}, '', '/');
-        // Keep cart for display, but mark as completed
-        LS.set('completedOrder', true);
+      } else if (savedScreen !== 'welcome') {
+        // Only restore saved screen if not a redirect
+        setScreen(savedScreen);
       }
     }
-  }, []);
+  }, [hydrated]);
   const [activeCategory, setActiveCategory] = useState('cokolada');
   const [recentlyAdded, setRecentlyAdded] = useState(null);
   const [animatingId, setAnimatingId] = useState(null);
