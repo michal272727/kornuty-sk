@@ -2,29 +2,6 @@ const nodemailer = require('nodemailer');
 const Stripe = require('stripe');
 const { PDFDocument, rgb } = require('pdf-lib');
 
-console.log('=== send-email.js loaded ===');
-console.log('STRIPE_SECRET_KEY exists:', !!process.env.STRIPE_SECRET_KEY);
-console.log('All env vars:', Object.keys(process.env).filter(k => k.includes('STRIPE')));
-
-const stripeKey = process.env.STRIPE_SECRET_KEY;
-if (!stripeKey) {
-  console.error('STRIPE_SECRET_KEY is not defined');
-}
-
-const stripe = new Stripe(stripeKey || '', {
-  apiVersion: '2023-10-16',
-});
-
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: parseInt(process.env.SMTP_PORT || '587'),
-  secure: false,
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
-  },
-});
-
 async function generateInvoicePDF(session, lineItems) {
   const doc = await PDFDocument.create();
   const page = doc.addPage([595, 842]);
@@ -115,11 +92,23 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Missing sessionId' });
     }
 
-    // Debug: check environment
+    // Initialize at runtime, not build-time
     if (!process.env.STRIPE_SECRET_KEY) {
-      console.error('STRIPE_SECRET_KEY not found in environment');
       return res.status(500).json({ error: 'STRIPE_SECRET_KEY not configured' });
     }
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+      apiVersion: '2023-10-16',
+    });
+
+    const transporter = nodemailer.createTransport({
+      host: process.env.SMTP_HOST,
+      port: parseInt(process.env.SMTP_PORT || '587'),
+      secure: false,
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+    });
 
     // Fetch session from Stripe
     let session;
