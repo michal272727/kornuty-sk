@@ -52,6 +52,27 @@ function App() {
       if (savedTier > 0) setCapacityTier(savedTier);
     }
   }, [hydrated]);
+
+  // Handle Stripe success redirect
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const sessionId = params.get('session_id');
+      if (sessionId) {
+        setScreen('success');
+        fetch('/api/send-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ sessionId }),
+        }).catch(err => console.error('Email send error:', err));
+        // Clear URL
+        window.history.replaceState({}, '', '/');
+        // Reset cart
+        LS.set('cart', []);
+        setCart([]);
+      }
+    }
+  }, []);
   const [activeCategory, setActiveCategory] = useState('cokolada');
   const [recentlyAdded, setRecentlyAdded] = useState(null);
   const [animatingId, setAnimatingId] = useState(null);
@@ -751,7 +772,19 @@ function CheckoutScreen({ subtotal, coneCount, orderInfo, setOrderInfo, onBack, 
       </div>
 
       <div className="legal">
-        Predajca: TerasKA s.r.o., Majerský rad 1527/77, 963 01 Krupina
+        Predajca: TerasKA s.r.o., Majerský rad 1527/77, 963 01 Krupina<br/>
+        Odoslaním objednávky súhlasíte s{' '}
+        <a href="/vop" target="_blank" style={{ color: '#0066cc', textDecoration: 'underline' }}>
+          Obchodnými podmienkami
+        </a>
+        {' '} a{' '}
+        <a href="/gdpr" target="_blank" style={{ color: '#0066cc', textDecoration: 'underline' }}>
+          Ochranou osobných údajov
+        </a>
+        . Máte <a href="/odstupenie" target="_blank" style={{ color: '#0066cc', textDecoration: 'underline' }}>
+          právo na odstúpenie
+        </a>{' '}
+        do 14 dní.
       </div>
     </div>
   );
