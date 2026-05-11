@@ -670,8 +670,8 @@ function CheckoutScreen({ subtotal, coneCount, orderInfo, setOrderInfo, onBack, 
       const { sessionId } = await res.json();
 
       // Redirect to Stripe Checkout
-      const { Stripe } = await import('@stripe/stripe-js');
-      const stripe = await Stripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
+      const { loadStripe } = await import('@stripe/stripe-js');
+      const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
       await stripe.redirectToCheckout({ sessionId });
     } catch (err) {
       console.error(err);
