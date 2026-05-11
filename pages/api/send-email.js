@@ -2,7 +2,16 @@ import nodemailer from 'nodemailer';
 import Stripe from 'stripe';
 import { PDFDocument, rgb } from 'pdf-lib';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+console.log('send-email.js loaded');
+console.log('STRIPE_SECRET_KEY exists:', !!process.env.STRIPE_SECRET_KEY);
+console.log('STRIPE_SECRET_KEY starts with:', process.env.STRIPE_SECRET_KEY?.substring(0, 10));
+
+const stripeKey = process.env.STRIPE_SECRET_KEY;
+if (!stripeKey) {
+  console.error('STRIPE_SECRET_KEY is not defined in environment');
+}
+
+const stripe = new Stripe(stripeKey || '', {
   apiVersion: '2023-10-16',
 });
 
