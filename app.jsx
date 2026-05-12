@@ -15,10 +15,10 @@ const { useState, useEffect, useRef, useMemo, useCallback } = React;
 
 const SCREENS = ['welcome', 'builder', 'cart', 'checkout', 'success'];
 
-// LocalStorage helpers
+// LocalStorage helpers (v2: force fresh data with new cart format)
 const LS = {
-  get: (k, d) => { try { const v = localStorage.getItem('kornuty:' + k); return v ? JSON.parse(v) : d; } catch { return d; } },
-  set: (k, v) => { try { localStorage.setItem('kornuty:' + k, JSON.stringify(v)); } catch {} },
+  get: (k, d) => { try { const v = localStorage.getItem('kornuty:v2:' + k); return v ? JSON.parse(v) : d; } catch { return d; } },
+  set: (k, v) => { try { localStorage.setItem('kornuty:v2:' + k, JSON.stringify(v)); } catch {} },
 };
 
 function App() {
