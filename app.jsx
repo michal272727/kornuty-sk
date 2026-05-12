@@ -331,24 +331,22 @@ function WelcomeScreen({ onStart, direction, cart, setScreen }) {
 
       <div className="welcome-content">
         <div className="brand-badge">
-          🍦 kornuty.sk
+          kornuty.sk
         </div>
 
         <div className="welcome-cone">
           <ConeViz items={[
-            { id: 'demo-1', color: '#F4A8B8', weight: 30 },
-            { id: 'demo-2', color: '#F8C868', weight: 30 },
-            { id: 'demo-3', color: '#9AC56A', weight: 30 },
-            { id: 'demo-4', color: '#A858E8', weight: 30 },
-            { id: 'demo-5', color: '#5BD8C8', weight: 30 },
-            { id: 'demo-6', color: '#FFB048', weight: 30 },
-            { id: 'demo-7', color: '#E84A6A', weight: 30 },
-            { id: 'demo-8', color: '#D4A876', weight: 30 },
+            { id: 'demo-1', color: '#F4A8B8', weight: 50 },
+            { id: 'demo-2', color: '#F8C868', weight: 50 },
+            { id: 'demo-3', color: '#9AC56A', weight: 100 },
+            { id: 'demo-4', color: '#A858E8', weight: 100 },
+            { id: 'demo-5', color: '#5BD8C8', weight: 100 },
+            { id: 'demo-6', color: '#FFB048', weight: 100 },
           ]} size="lg" />
         </div>
 
         <h1 className="welcome-h1">
-          Vytvor si <em>svoj</em><br/>vlastný kornút
+          Vytvor si <em>vlastný kornút</em>
         </h1>
         <p className="welcome-sub">
           Vyber si zo 100+ ingrediencií. Navrhni, namixuj, daruj.
