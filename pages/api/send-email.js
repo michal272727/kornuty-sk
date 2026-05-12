@@ -114,7 +114,7 @@ export default async function handler(req, res) {
     let session;
     try {
       session = await stripe.checkout.sessions.retrieve(sessionId, {
-        expand: ['line_items'],
+        expand: ['line_items', 'customer'],
       });
     } catch (stripeError) {
       console.error('Stripe error:', stripeError.message);
@@ -122,7 +122,21 @@ export default async function handler(req, res) {
     }
 
     const lineItems = session.line_items?.data || [];
-    const customerEmail = session.customer_email;
+    // Get customer email from multiple sources
+    const customerEmail = session.customer_email || session.customer?.email || session.metadata?.email;
+
+    // Debug logging
+    console.log('Session retrieved:', {
+      sessionId: sessionId.slice(-8),
+      customerEmail,
+      metadata: session.metadata,
+      customer_email: session.customer_email,
+    });
+
+    if (!customerEmail) {
+      console.error('No customer email found in session');
+      return res.status(400).json({ error: 'No customer email in session' });
+    }
 
     // Generate PDF invoice
     const pdfBytes = await generateInvoicePDF(session, lineItems);

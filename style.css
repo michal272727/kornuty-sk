@@ -500,11 +500,11 @@ input, textarea { font: inherit; color: inherit; }
   flex-direction: column;
   align-items: center;
   gap: 6px;
-  padding: 10px 8px 8px;
+  padding: 12px 10px 10px;
   background: var(--paper);
   border: 1.5px solid var(--line);
   border-radius: var(--radius-md);
-  min-width: 76px;
+  min-width: 95px;
   position: relative;
   transition: all 0.15s ease;
 }
