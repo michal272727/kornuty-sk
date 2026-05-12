@@ -535,13 +535,14 @@ function BuilderScreen({
         {visibleItems.map(item => {
           const inCart = inCartIds.has(item.id);
           const cartEntry = cart.find(c => c.id === item.id);
+          const totalWeight = cartEntry?.weights ? cartEntry.weights.reduce((a, b) => a + b, 0) : 0;
           return (
             <ItemCard
               key={item.id}
               item={item}
               unit={cat.unit}
               inCart={inCart}
-              weight={cartEntry?.weight || 0}
+              weight={totalWeight}
               onAdd={() => addItem(item.id)}
               onRemove={() => removeItem(item.id)}
               onUpdate={(w) => updateWeight(item.id, w)}
@@ -586,9 +587,9 @@ function ItemCard({ item, unit, inCart, weight, onAdd, onRemove, onUpdate, anima
         </button>
       ) : (
         <div className="item-stepper">
-          <button onClick={() => onUpdate(weight - step)}><MinusIcon /></button>
+          <button onClick={onRemove}><MinusIcon /></button>
           <span>{weight}g</span>
-          <button onClick={() => onUpdate(weight + step)}><PlusIcon /></button>
+          <button onClick={onAdd}><PlusIcon /></button>
         </div>
       )}
     </div>
