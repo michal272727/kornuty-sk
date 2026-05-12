@@ -46,7 +46,9 @@ function App() {
   useEffect(() => {
     if (hydrated && typeof window !== 'undefined') {
       const savedScreen = LS.get('screen', 'welcome');
-      const savedCart = LS.get('cart', []);
+      let savedCart = LS.get('cart', []);
+      // Migrate old weight format to new weights array format
+      savedCart = savedCart.map(c => c.weights ? c : { ...c, weights: [c.weight] });
       const savedTier = LS.get('capacityTier', 0);
 
       // Restore state first
