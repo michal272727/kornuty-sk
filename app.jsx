@@ -331,7 +331,7 @@ function WelcomeScreen({ onStart, direction, cart, setScreen }) {
 
       <div className="welcome-content">
         <div className="brand-badge">
-          <SparkleIcon /> kornuty.sk
+          🍦 kornuty.sk
         </div>
 
         <div className="welcome-cone">
@@ -341,11 +341,14 @@ function WelcomeScreen({ onStart, direction, cart, setScreen }) {
             { id: 'demo-3', color: '#9AC56A', weight: 30 },
             { id: 'demo-4', color: '#A858E8', weight: 30 },
             { id: 'demo-5', color: '#5BD8C8', weight: 30 },
+            { id: 'demo-6', color: '#FFB048', weight: 30 },
+            { id: 'demo-7', color: '#E84A6A', weight: 30 },
+            { id: 'demo-8', color: '#D4A876', weight: 30 },
           ]} size="lg" />
         </div>
 
         <h1 className="welcome-h1">
-          Vytvor si <em>vlastný</em><br/>sladký kornút
+          Vytvor si <em>svoj</em><br/>vlastný kornút
         </h1>
         <p className="welcome-sub">
           Vyber si zo 100+ ingrediencií. Navrhni, namixuj, daruj.
@@ -526,7 +529,7 @@ function BuilderScreen({
               unit={cat.unit}
               inCart={inCart}
               weight={cartEntry?.weight || 0}
-              onAdd={() => addItem(item.id, cat.unit === 10 ? 10 : 20)}
+              onAdd={() => addItem(item.id)}
               onRemove={() => removeItem(item.id)}
               onUpdate={(w) => updateWeight(item.id, w)}
               animating={animatingId === item.id}
