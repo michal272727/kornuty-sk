@@ -95,8 +95,10 @@ function App() {
   const totalWeight = cart.reduce((s, c) => s + c.weight, 0);
   const subtotal = useMemo(() => {
     if (typeof window === 'undefined') return 0;
-    return cartItems.reduce((s, i) => s + (i.price * i.weight / i.unit), 0);
-  }, [cartItems]);
+    const ingredientsCost = cartItems.reduce((s, i) => s + (i.price * i.weight / i.unit), 0);
+    const baseCost = cart.length > 0 ? window.BASE_CONE_PRICE : 0;
+    return baseCost + ingredientsCost;
+  }, [cartItems, cart.length]);
   const capacity = useMemo(() => {
     if (typeof window === 'undefined') return 500;
     return window.getActiveCapacity(capacityTier);
@@ -142,8 +144,14 @@ function App() {
     return hasMrazom;
   };
 
-  const addItem = useCallback((id, weight = 20) => {
+  const addItem = useCallback((id, weight) => {
     if (typeof window === 'undefined') return;
+
+    // Default weight logic: 50g for first 2 items, 100g for 3rd+
+    if (weight === undefined) {
+      weight = cart.length < 2 ? 50 : 100;
+    }
+
     const currentTotal = cart.reduce((s, c) => s + c.weight, 0);
     const currentCap = window.getActiveCapacity(capacityTier);
     // Auto-upgrade if would overflow

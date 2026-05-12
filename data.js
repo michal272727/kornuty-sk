@@ -153,6 +153,9 @@ if (typeof window !== 'undefined') {
 
   window.CATEGORY_ORDER = ['ovocie', 'orechy', 'cokolada', 'cukrovinky', 'slane', 'semienka', 'mrazom'];
 
+  // Base price for one cone
+  window.BASE_CONE_PRICE = 1.00;
+
   // shipping
   window.SHIPPING = 4.00;
 
