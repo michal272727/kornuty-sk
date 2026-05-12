@@ -90,9 +90,9 @@ function App() {
   // Cart helpers
   const cartItems = useMemo(() => {
     if (typeof window === 'undefined') return [];
-    return cart.map(c => ({ ...window.ITEM_LOOKUP[c.id], weight: c.weight }));
+    return cart.map(c => ({ ...window.ITEM_LOOKUP[c.id], weight: c.weights ? c.weights.reduce((a, b) => a + b, 0) : c.weight }));
   }, [cart]);
-  const totalWeight = cart.reduce((s, c) => s + c.weight, 0);
+  const totalWeight = cart.reduce((s, c) => s + (c.weights ? c.weights.reduce((a, b) => a + b, 0) : c.weight), 0);
   const subtotal = useMemo(() => {
     if (typeof window === 'undefined') return 0;
     const ingredientsCost = cartItems.reduce((s, i) => s + (i.price * i.weight / i.unit), 0);
@@ -147,12 +147,14 @@ function App() {
   const addItem = useCallback((id, weight) => {
     if (typeof window === 'undefined') return;
 
-    // Default weight logic: 50g for first 2 items, 100g for 3rd+
+    // Default weight logic: segment 1 & 2 = 50g, segment 3+ = 100g
     if (weight === undefined) {
-      weight = cart.length < 2 ? 50 : 100;
+      // Count total segments already in cart
+      const totalSegments = cart.reduce((sum, c) => sum + (c.weights ? c.weights.length : 1), 0);
+      weight = totalSegments < 2 ? 50 : 100;
     }
 
-    const currentTotal = cart.reduce((s, c) => s + c.weight, 0);
+    const currentTotal = cart.reduce((s, c) => s + (c.weights ? c.weights.reduce((a, b) => a + b, 0) : c.weight), 0);
     const currentCap = window.getActiveCapacity(capacityTier);
     // Auto-upgrade if would overflow
     if (currentTotal + weight > currentCap) {
@@ -171,8 +173,10 @@ function App() {
     }
     setCart(prev => {
       const existing = prev.find(c => c.id === id);
-      if (existing) return prev.map(c => c.id === id ? { ...c, weight: c.weight + weight } : c);
-      return [...prev, { id, weight }];
+      if (existing) {
+        return prev.map(c => c.id === id ? { ...c, weights: [...(c.weights || [c.weight]), weight] } : c);
+      }
+      return [...prev, { id, weights: [weight] }];
     });
     setRecentlyAdded(id);
     setAnimatingId(id);
@@ -196,8 +200,17 @@ function App() {
 
   const removeItem = (id) => {
     setCart(prev => {
-      const updated = prev.filter(c => c.id !== id);
-      const newTotal = updated.reduce((s, c) => s + c.weight, 0);
+      const updated = prev.map(c => {
+        if (c.id === id) {
+          // Remove last segment from this item
+          const newWeights = c.weights ? [...c.weights] : [c.weight];
+          newWeights.pop();
+          return newWeights.length > 0 ? { ...c, weights: newWeights } : null;
+        }
+        return c;
+      }).filter(Boolean);
+
+      const newTotal = updated.reduce((s, c) => s + (c.weights ? c.weights.reduce((a, b) => a + b, 0) : c.weight), 0);
       const optimalTier = getOptimalTier(newTotal);
       if (optimalTier < capacityTier) {
         setCapacityTier(optimalTier);
@@ -211,8 +224,8 @@ function App() {
       removeItem(id);
     } else {
       setCart(prev => {
-        const updated = prev.map(c => c.id === id ? { ...c, weight } : c);
-        const newTotal = updated.reduce((s, c) => s + c.weight, 0);
+        const updated = prev.map(c => c.id === id ? { ...c, weights: [weight] } : c);
+        const newTotal = updated.reduce((s, c) => s + (c.weights ? c.weights.reduce((a, b) => a + b, 0) : c.weight), 0);
         const optimalTier = getOptimalTier(newTotal);
         if (optimalTier < capacityTier) {
           setCapacityTier(optimalTier);
@@ -346,7 +359,7 @@ function WelcomeScreen({ onStart, direction, cart, setScreen }) {
         </div>
 
         <h1 className="welcome-h1">
-          Vytvor si <em>vlastný kornút</em>
+          Vytvor si svoj <em>vlastný kornút</em>
         </h1>
         <p className="welcome-sub">
           Vyber si zo 100+ ingrediencií. Navrhni, namixuj, daruj.
