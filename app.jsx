@@ -738,17 +738,20 @@ function CheckoutScreen({ subtotal, coneCount, orderInfo, setOrderInfo, delivery
         }),
       });
 
-      if (!res.ok) throw new Error('Checkout failed');
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.error || 'Checkout failed');
+      }
 
-      const { sessionId } = await res.json();
-
-      // Redirect to Stripe Checkout
-      const { loadStripe } = await import('@stripe/stripe-js');
-      const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
-      await stripe.redirectToCheckout({ sessionId });
+      const { url } = await res.json();
+      if (url) {
+        window.location.href = url;
+      } else {
+        throw new Error('No checkout URL received');
+      }
     } catch (err) {
-      console.error(err);
-      alert('Chyba pri platbe. Skúste neskôr.');
+      console.error('Checkout error:', err);
+      alert(`Chyba pri platbe: ${err.message}`);
       setLoading(false);
     }
   };

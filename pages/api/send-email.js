@@ -2,6 +2,11 @@ const nodemailer = require('nodemailer');
 const Stripe = require('stripe');
 const { PDFDocument, rgb } = require('pdf-lib');
 
+const removeDiacritics = (text) => {
+  if (!text) return '';
+  return text.normalize('NFD').replace(/[̀-ͯ]/g, '');
+};
+
 async function generateInvoicePDF(session, lineItems) {
   const doc = await PDFDocument.create();
   const page = doc.addPage([595, 842]);
@@ -20,24 +25,24 @@ async function generateInvoicePDF(session, lineItems) {
   y -= 20;
   page.drawText('TerasKA s.r.o.', { x: 50, y, size: smallFontSize });
   y -= 15;
-  page.drawText('Majerský rad 1527/77, 963 01 Krupina', { x: 50, y, size: smallFontSize });
+  page.drawText('Majersky rad 1527/77, 963 01 Krupina', { x: 50, y, size: smallFontSize });
   y -= 30;
 
   // Invoice number and date
   const invoiceNum = `FAK-${session.id.slice(-8).toUpperCase()}`;
   const invoiceDate = new Date(session.created * 1000).toLocaleDateString('sk-SK');
 
-  page.drawText(`Číslo faktúry: ${invoiceNum}`, { x: 50, y, size: smallFontSize });
+  page.drawText(`Cislo faktury: ${invoiceNum}`, { x: 50, y, size: smallFontSize });
   y -= 15;
-  page.drawText(`Dátum: ${invoiceDate}`, { x: 50, y, size: smallFontSize });
+  page.drawText(`Datum: ${invoiceDate}`, { x: 50, y, size: smallFontSize });
   y -= 30;
 
   // Customer info
-  page.drawText('ODBERATEĽ:', { x: 50, y, size: fontSize, color: rgb(0, 0, 0) });
+  page.drawText('ODBERATEL:', { x: 50, y, size: fontSize, color: rgb(0, 0, 0) });
   y -= 20;
-  page.drawText(session.metadata.name || 'N/A', { x: 50, y, size: smallFontSize });
+  page.drawText(removeDiacritics(session.metadata.name || 'N/A'), { x: 50, y, size: smallFontSize });
   y -= 15;
-  page.drawText(`${session.metadata.address || ''}, ${session.metadata.zip || ''} ${session.metadata.city || ''}`, { x: 50, y, size: smallFontSize });
+  page.drawText(removeDiacritics(`${session.metadata.address || ''}, ${session.metadata.zip || ''} ${session.metadata.city || ''}`), { x: 50, y, size: smallFontSize });
   y -= 15;
   page.drawText(`Tel: ${session.metadata.phone || 'N/A'}`, { x: 50, y, size: smallFontSize });
   y -= 30;
@@ -47,15 +52,16 @@ async function generateInvoicePDF(session, lineItems) {
   y -= 20;
 
   // Table headers
-  page.drawText('Položka', { x: 50, y, size: smallFontSize, color: rgb(0.3, 0.3, 0.3) });
-  page.drawText('Počet', { x: 350, y, size: smallFontSize, color: rgb(0.3, 0.3, 0.3) });
+  page.drawText('Polozka', { x: 50, y, size: smallFontSize, color: rgb(0.3, 0.3, 0.3) });
+  page.drawText('Pocet', { x: 350, y, size: smallFontSize, color: rgb(0.3, 0.3, 0.3) });
   page.drawText('Cena EUR', { x: 450, y, size: smallFontSize, color: rgb(0.3, 0.3, 0.3) });
   y -= 15;
 
   // Line items
   lineItems.forEach(item => {
-    const description = item.description || item.price_data.product_data.name;
-    const price = (item.price_data.unit_amount / 100).toFixed(2);
+    const description = removeDiacritics(item.description || item.price_data?.product_data?.name || 'Item');
+    const unitAmount = item.price_data?.unit_amount || item.price?.unit_amount || 0;
+    const price = (unitAmount / 100).toFixed(2);
     const qty = item.quantity || 1;
 
     page.drawText(description, { x: 50, y, size: smallFontSize });
@@ -73,7 +79,7 @@ async function generateInvoicePDF(session, lineItems) {
   y -= 30;
 
   // Footer
-  page.drawText('Spôsob platby: Platobná karta', { x: 50, y, size: smallFontSize, color: rgb(0.5, 0.5, 0.5) });
+  page.drawText('Sposob platby: Platobna karta', { x: 50, y, size: smallFontSize, color: rgb(0.5, 0.5, 0.5) });
   y -= 15;
   page.drawText('Nie som platca DPH', { x: 50, y, size: smallFontSize, color: rgb(0.5, 0.5, 0.5) });
 
