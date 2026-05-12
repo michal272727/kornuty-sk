@@ -78,6 +78,7 @@ function App() {
   const [recentlyAdded, setRecentlyAdded] = useState(null);
   const [animatingId, setAnimatingId] = useState(null);
   const [lastAddedId, setLastAddedId] = useState(null);
+  const [lastCartState, setLastCartState] = useState(null);
   const [toast, setToast] = useState(null);
   const [orderInfo, setOrderInfo] = useState(LS.get('orderInfo', { name: '', email: '', phone: '', address: '', city: '', zip: '' }));
   const [coneCount, setConeCount] = useState(1);
@@ -130,6 +131,15 @@ function App() {
     if (canUpgrade) setCapacityTier(t => t + 1);
   };
 
+  const undoLastAdd = () => {
+    if (lastCartState) {
+      setCart(lastCartState.cart);
+      setCapacityTier(lastCartState.capacityTier);
+      setLastCartState(null);
+      setToast(null);
+    }
+  };
+
   const hasMrazom = useMemo(() => {
     if (typeof window === 'undefined') return false;
     return cart.some(c => window.ITEM_LOOKUP[c.id]?.exclusive);
@@ -173,6 +183,9 @@ function App() {
         return;
       }
     }
+    // Save current cart state for undo
+    setLastCartState({ cart, capacityTier });
+
     setCart(prev => {
       const existing = prev.find(c => c.id === id);
       if (existing) {
@@ -183,9 +196,11 @@ function App() {
     setRecentlyAdded(id);
     setAnimatingId(id);
     setLastAddedId(id);
+    setToast({ message: `Pridané (${weight}g)`, undo: true });
     setTimeout(() => setAnimatingId(null), 600);
     setTimeout(() => setRecentlyAdded(null), 1500);
     setTimeout(() => setLastAddedId(null), 1200);
+    setTimeout(() => setToast(null), 4000);
   }, [cart, capacityTier, setCart, setCapacityTier, setToast, setRecentlyAdded, setAnimatingId, setLastAddedId]);
 
   const getOptimalTier = useCallback((newTotal) => {
@@ -242,7 +257,6 @@ function App() {
   // Direction class on root
   return (
     <div className={`app dir-${direction}`}>
-      {toast && <div className="toast">{toast}</div>}
       <TweaksPanel title="Tweaks">
         <TweakSection label="Vizuálny smer" />
         <TweakRadio
@@ -254,6 +268,14 @@ function App() {
       </TweaksPanel>
 
       <div className="screen-stack" suppressHydrationWarning>
+        {toast && (
+          <div className="toast">
+            <span>{typeof toast === 'string' ? toast : toast.message}</span>
+            {typeof toast === 'object' && toast.undo && (
+              <button className="toast-undo" onClick={undoLastAdd}>Späť</button>
+            )}
+          </div>
+        )}
         {(!hydrated || screen === 'welcome') && <WelcomeScreen onStart={() => setScreen('builder')} direction={direction} cart={cart} setScreen={setScreen} />}
         {hydrated && screen === 'builder' && (
           <BuilderScreen
