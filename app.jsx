@@ -430,9 +430,12 @@ function BuilderScreen({
   const cat = window.CATALOG[activeCategory];
   const [search, setSearch] = useState('');
 
-  const visibleItems = cat.items.filter(it =>
-    !search || it.name.toLowerCase().includes(search.toLowerCase())
-  );
+  // Search across all categories if search is active, otherwise show active category
+  const visibleItems = search
+    ? Object.values(window.CATALOG).flatMap(c => c.items).filter(it =>
+        it.name.toLowerCase().includes(search.toLowerCase())
+      )
+    : cat.items;
 
   const inCartIds = new Set(cart.map(c => c.id));
 
@@ -546,7 +549,7 @@ function BuilderScreen({
         <SearchIcon />
         <input
           className="search-input"
-          placeholder={`Hľadať v ${cat.short.toLowerCase()}...`}
+          placeholder="Hľadať ingredienciu..."
           value={search}
           onChange={e => setSearch(e.target.value)}
         />
@@ -558,11 +561,14 @@ function BuilderScreen({
           const inCart = inCartIds.has(item.id);
           const cartEntry = cart.find(c => c.id === item.id);
           const totalWeight = cartEntry?.weights ? cartEntry.weights.reduce((a, b) => a + b, 0) : 0;
+          // Find the category and unit for this item
+          const itemCategory = Object.values(window.CATALOG).find(c => c.items.some(i => i.id === item.id));
+          const itemUnit = itemCategory?.unit || cat.unit;
           return (
             <ItemCard
               key={item.id}
               item={item}
-              unit={cat.unit}
+              unit={itemUnit}
               inCart={inCart}
               weight={totalWeight}
               onAdd={() => addItem(item.id)}
@@ -658,11 +664,7 @@ function CartScreen({ cart, cartItems, totalWeight, subtotal, capacityTier, upda
                   <div className="cart-name">{it.name}</div>
                   <div className="cart-price">{(it.price * it.weight / it.unit).toFixed(2)} €</div>
                 </div>
-                <div className="item-stepper compact">
-                  <button onClick={() => updateWeight(it.id, it.weight - (it.unit === 10 ? 10 : 20))}><MinusIcon /></button>
-                  <span>{it.weight}g</span>
-                  <button onClick={() => updateWeight(it.id, it.weight + (it.unit === 10 ? 10 : 20))}><PlusIcon /></button>
-                </div>
+                <div className="cart-weight">{it.weight}g</div>
               </div>
             ))}
           </div>
@@ -699,7 +701,6 @@ function CartScreen({ cart, cartItems, totalWeight, subtotal, capacityTier, upda
           </div>
 
           <div className="cart-actions">
-            <button className="btn-ghost-line" onClick={clearCart}>Vyprázdniť</button>
             <button className="btn-primary btn-lg" onClick={onContinue}>
               Pokračovať <ArrowIcon />
             </button>
