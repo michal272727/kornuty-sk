@@ -601,9 +601,9 @@ function ItemCard({ item, unit, inCart, weight, onAdd, onRemove, onUpdate, anima
   const step = unit === 10 ? 10 : 20;
   return (
     <div className={`item-card ${inCart ? 'in-cart' : ''} ${animating ? 'pulse' : ''} ${recent ? 'flash' : ''}`}>
-      <div className="item-illus" style={{ background: `${item.color}26`, fontSize: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+      <div className="item-illus" style={{ background: `${item.color}26`, fontSize: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', padding: '12px' }}>
         {item.image ? (
-          <img src={item.image} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          <img src={item.image} alt={item.name} style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
         ) : (
           item.icon || <IngIllus id={item.id} color={item.color} />
         )}
