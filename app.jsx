@@ -603,7 +603,7 @@ function ItemCard({ item, unit, inCart, weight, onAdd, onRemove, onUpdate, anima
     <div className={`item-card ${inCart ? 'in-cart' : ''} ${animating ? 'pulse' : ''} ${recent ? 'flash' : ''}`}>
       <div className="item-illus" style={{ background: `${item.color}26`, fontSize: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', padding: '12px' }}>
         {item.image ? (
-          <img src={item.image} alt={item.name} style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
+          <img src={item.image} alt={item.name} style={{ width: '120px', height: '120px', objectFit: 'contain' }} />
         ) : (
           item.icon || <IngIllus id={item.id} color={item.color} />
         )}
