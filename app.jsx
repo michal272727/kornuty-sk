@@ -601,12 +601,12 @@ function ItemCard({ item, unit, inCart, weight, onAdd, onRemove, onUpdate, anima
   const step = unit === 10 ? 10 : 20;
   return (
     <div className={`item-card ${inCart ? 'in-cart' : ''} ${animating ? 'pulse' : ''} ${recent ? 'flash' : ''}`}>
-      <div className="item-illus" style={{ background: `${item.color}26` }}>
-        <IngIllus id={item.id} color={item.color} />
+      <div className="item-illus" style={{ background: `${item.color}26`, fontSize: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        {item.icon || <IngIllus id={item.id} color={item.color} />}
         {inCart && <div className="item-badge">{weight}g</div>}
       </div>
       <div className="item-info">
-        <div className="item-name">{item.icon} {item.name}</div>
+        <div className="item-name">{item.name}</div>
         <div className="item-price">{item.price.toFixed(2)} € / {unit}g</div>
       </div>
       {!inCart ? (
@@ -899,7 +899,7 @@ function SuccessScreen({ cartItems, coneCount, subtotal, total, shipping, delive
           <div className="order-items">
             {cartItems.map(item => (
               <div key={item.id} className="order-item">
-                <div className="order-item-name">{item.icon} {item.name}</div>
+                <div className="order-item-name">{item.name}</div>
                 <div className="order-item-detail">{item.weight}g × {coneCount}</div>
                 <div className="order-item-price">{(item.price * item.weight / item.unit * coneCount).toFixed(2)} €</div>
               </div>
