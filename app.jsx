@@ -601,8 +601,12 @@ function ItemCard({ item, unit, inCart, weight, onAdd, onRemove, onUpdate, anima
   const step = unit === 10 ? 10 : 20;
   return (
     <div className={`item-card ${inCart ? 'in-cart' : ''} ${animating ? 'pulse' : ''} ${recent ? 'flash' : ''}`}>
-      <div className="item-illus" style={{ background: `${item.color}26`, fontSize: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        {item.icon || <IngIllus id={item.id} color={item.color} />}
+      <div className="item-illus" style={{ background: `${item.color}26`, fontSize: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+        {item.image ? (
+          <img src={item.image} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+        ) : (
+          item.icon || <IngIllus id={item.id} color={item.color} />
+        )}
         {inCart && <div className="item-badge">{weight}g</div>}
       </div>
       <div className="item-info">
