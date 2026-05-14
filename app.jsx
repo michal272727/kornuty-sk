@@ -779,9 +779,12 @@ function CheckoutScreen({ completedCones, orderInfo, setOrderInfo, deliveryMetho
     try {
       // Ensure completedCones are saved to localStorage before redirecting
       if (typeof window !== 'undefined') {
+        console.log('Saving to localStorage - completedCones:', completedCones);
+        console.log('completedCones length:', completedCones?.length);
         localStorage.setItem('kornuty:v2:completedCones', JSON.stringify(completedCones));
         localStorage.setItem('kornuty:v2:deliveryMethod', JSON.stringify(deliveryMethod));
         localStorage.setItem('kornuty:v2:orderInfo', JSON.stringify(orderInfo));
+        console.log('localStorage check:', localStorage.getItem('kornuty:v2:completedCones'));
       }
 
       const res = await fetch('/api/checkout', {
@@ -947,6 +950,13 @@ function OptionRow({ checked, onClick, title, sub, price }) {
 // ============ SUCCESS ============
 function SuccessScreen({ completedCones, deliveryMethod, orderInfo, onRestart, direction }) {
   const orderNum = useMemo(() => 'KOR-' + Math.floor(Math.random() * 90000 + 10000), []);
+
+  // Debug logging
+  useEffect(() => {
+    console.log('SuccessScreen - completedCones:', completedCones);
+    console.log('SuccessScreen - completedCones.length:', completedCones?.length);
+    console.log('SuccessScreen - localStorage completedCones:', localStorage.getItem('kornuty:v2:completedCones'));
+  }, [completedCones]);
 
   // Calculate subtotal with safety checks
   const subtotal = useMemo(() => {
