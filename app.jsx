@@ -777,6 +777,13 @@ function CheckoutScreen({ completedCones, orderInfo, setOrderInfo, deliveryMetho
     setLoading(true);
 
     try {
+      // Ensure completedCones are saved to localStorage before redirecting
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('kornuty:v2:completedCones', JSON.stringify(completedCones));
+        localStorage.setItem('kornuty:v2:deliveryMethod', JSON.stringify(deliveryMethod));
+        localStorage.setItem('kornuty:v2:orderInfo', JSON.stringify(orderInfo));
+      }
+
       const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
