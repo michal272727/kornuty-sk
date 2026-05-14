@@ -7,7 +7,7 @@ const removeDiacritics = (text) => {
   return text.normalize('NFD').replace(/[̀-ͯ]/g, '');
 };
 
-async function generateInvoicePDF(session, lineItems, ingredientsList = []) {
+async function generateInvoicePDF(session, lineItems, conesList = []) {
   const doc = await PDFDocument.create();
   const page = doc.addPage([595, 842]);
   const { width, height } = page.getSize();
@@ -71,24 +71,23 @@ async function generateInvoicePDF(session, lineItems, ingredientsList = []) {
     y -= 15;
   });
 
-  // Add ingredients if available
-  if (ingredientsList.length > 0 && y > 200) {
+  // Add ingredients if available (multi-cone support)
+  if (conesList.length > 0 && y > 200) {
     y -= 15;
 
-    // Get balenie info
-    const CAPACITY_TIERS = [500, 1000, 1500];
-    const capacityTier = parseInt(session.metadata?.capacityTier) || 0;
-    const balenie = CAPACITY_TIERS[capacityTier] || 500;
-    const totalWeight = ingredientsList.reduce((sum, ing) => sum + (ing.weight || 0), 0);
-
-    page.drawText(`Zlozenije kornuta (Balenie: ${balenie}g, Naplnene: ${totalWeight}g):`, { x: 50, y, size: smallFontSize, color: rgb(0.3, 0.3, 0.3) });
-    y -= 12;
-
-    ingredientsList.forEach((ing, idx) => {
+    conesList.forEach((cone, coneIdx) => {
       if (y < 100) return;
-      const ingText = `${idx + 1}. ${removeDiacritics(ing.name)} - ${ing.weight}g`;
-      page.drawText(ingText, { x: 50, y, size: xSmall, color: rgb(0.4, 0.4, 0.4) });
-      y -= 10;
+
+      page.drawText(`Kornút #${cone.index} (Balenie: ${cone.capacity}g, Naplnené: ${cone.totalWeight}g):`, { x: 50, y, size: smallFontSize, color: rgb(0.3, 0.3, 0.3) });
+      y -= 12;
+
+      cone.ingredients.forEach((ing, ingIdx) => {
+        if (y < 100) return;
+        const ingText = `${ingIdx + 1}. ${removeDiacritics(ing.name)} - ${ing.weight}g`;
+        page.drawText(ingText, { x: 50, y, size: xSmall, color: rgb(0.4, 0.4, 0.4) });
+        y -= 10;
+      });
+      y -= 5;
     });
   }
 
@@ -153,12 +152,15 @@ export default async function handler(req, res) {
     // Get customer email from multiple sources
     const customerEmail = session.customer_email || session.customer?.email || session.metadata?.email;
 
-    // Parse ingredients from metadata (new compact format)
+    // Parse ingredients from metadata (new multi-cone format)
     let ingredientsList = [];
+    let conesList = [];
     try {
       if (session.metadata?.ingredientIds && session.metadata?.ingredientWeights) {
         const ids = session.metadata.ingredientIds.split(',');
         const weights = session.metadata.ingredientWeights.split(',').map(w => parseFloat(w));
+        const capacityTiers = session.metadata.capacityTiers ? session.metadata.capacityTiers.split(',').map(t => parseInt(t)) : [];
+        const coneItemCounts = session.metadata.coneItemCounts ? session.metadata.coneItemCounts.split(',').map(c => parseInt(c)) : [];
 
         // Build ingredient lookup from CATALOG
         const CATALOG = {
@@ -209,7 +211,7 @@ export default async function handler(req, res) {
             { id: 'mandle_kar', name: 'Mandle v slanom karamele' },
             { id: 'mandle_h', name: 'Mandle v horkej čokoláde' },
             { id: 'mandle_jah', name: 'Mandle v jahodovej čokoláde' },
-            { id: 'ovoc_zele', name: 'Ovocné želé v čokoláde' },
+            { id: 'ovoc_zele', name: 'Ovocné желé v čokoláde' },
             { id: 'slnecn_c', name: 'Slnečnica v čokoláde' },
             { id: 'visne_h', name: 'Višne v horkej čokoláde' },
           ],
@@ -278,9 +280,37 @@ export default async function handler(req, res) {
           name: lookupMap[id] || id,
           weight: weights[idx],
         }));
+
+        // Reconstruct cones from flattened data
+        let ingredientIndex = 0;
+        const CAPACITY_TIERS = [500, 1000, 1500];
+
+        conesList = coneItemCounts.map((itemCount, coneIdx) => {
+          const coneCapacityTier = capacityTiers[coneIdx] || 0;
+          const coneIngredients = [];
+          const coneWeight = [];
+
+          for (let i = 0; i < itemCount && ingredientIndex < ids.length; i++) {
+            coneIngredients.push({
+              name: lookupMap[ids[ingredientIndex]] || ids[ingredientIndex],
+              weight: weights[ingredientIndex],
+            });
+            coneWeight.push(weights[ingredientIndex]);
+            ingredientIndex++;
+          }
+
+          return {
+            index: coneIdx + 1,
+            capacity: CAPACITY_TIERS[coneCapacityTier] || 500,
+            totalWeight: coneWeight.reduce((a, b) => a + b, 0),
+            ingredients: coneIngredients,
+          };
+        });
       }
     } catch (e) {
       console.log('Could not parse ingredients', e);
+      ingredientsList = [];
+      conesList = [];
     }
 
     // Debug logging
@@ -297,29 +327,27 @@ export default async function handler(req, res) {
     }
 
     // Generate PDF invoice
-    const pdfBytes = await generateInvoicePDF(session, lineItems, ingredientsList);
+    const pdfBytes = await generateInvoicePDF(session, lineItems, conesList);
 
-    // Get capacity tier info
-    const CAPACITY_TIERS = [500, 1000, 1500];
-    const capacityTier = parseInt(session.metadata.capacityTier) || 0;
-    const balenie = CAPACITY_TIERS[capacityTier] || 500;
-    const totalWeight = ingredientsList.reduce((sum, ing) => sum + (ing.weight || 0), 0);
-
-    // Build ingredients HTML
-    const ingredientsHTML = ingredientsList.length > 0 ? `
-      <div style="margin: 20px 0; padding: 15px; background-color: #f5f5f5; border-radius: 8px;">
-        <h3>📦 Balenie: ${balenie}g (Naplnené: ${totalWeight}g)</h3>
-        <h3>🎯 Zloženie vášho kornútu (v poradí, ako ste si ho vytvorili):</h3>
-        <ol style="padding-left: 20px;">
-          ${ingredientsList.map((ing, idx) => `
-            <li style="padding: 6px 0; margin-bottom: 4px;">
-              <strong>${removeDiacritics(ing.name)}</strong> — <span style="color: #666;">${ing.weight}g</span>
-            </li>
-          `).join('')}
-        </ol>
-        <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #ddd;">
-          <strong>Celková hmotnosť:</strong> ${totalWeight}g
-        </div>
+    // Build ingredients HTML for multiple cones
+    const ingredientsHTML = conesList.length > 0 ? `
+      <div style="margin: 20px 0;">
+        ${conesList.map(cone => `
+          <div style="margin-bottom: 20px; padding: 15px; background-color: #f5f5f5; border-radius: 8px;">
+            <h3>📦 Kornút #${cone.index}</h3>
+            <p style="margin: 10px 0; color: #666;">
+              <strong>Balenie:</strong> ${cone.capacity}g | <strong>Naplnené:</strong> ${cone.totalWeight}g
+            </p>
+            <p style="margin: 10px 0;"><strong>🎯 Zloženie (v poradí, ako ste si ho vytvorili):</strong></p>
+            <ol style="padding-left: 20px; margin: 10px 0;">
+              ${cone.ingredients.map((ing, idx) => `
+                <li style="padding: 6px 0; margin-bottom: 4px;">
+                  <strong>${removeDiacritics(ing.name)}</strong> — <span style="color: #666;">${ing.weight}g</span>
+                </li>
+              `).join('')}
+            </ol>
+          </div>
+        `).join('')}
       </div>
     ` : '';
 
@@ -366,29 +394,33 @@ export default async function handler(req, res) {
       ],
     });
 
-    // Build admin ingredients table
-    const ingredientsTableHTML = ingredientsList.length > 0 ? `
-      <h3>📦 Balenie: ${balenie}g (Naplnené: ${totalWeight}g)</h3>
-      <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
-        <thead>
-          <tr style="background-color: #ff6b9d; color: white;">
-            <th style="border: 1px solid #ddd; padding: 10px; text-align: left; width: 70%;">Ingrediencia (poradie pridania)</th>
-            <th style="border: 1px solid #ddd; padding: 10px; text-align: right; width: 30%;">Hmotnosť (g)</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${ingredientsList.map((ing, idx) => `
-            <tr style="background-color: ${idx % 2 === 0 ? '#fff' : '#f9f9f9'};">
-              <td style="border: 1px solid #ddd; padding: 10px;">${idx + 1}. ${removeDiacritics(ing.name)}</td>
-              <td style="border: 1px solid #ddd; padding: 10px; text-align: right;"><strong>${ing.weight}g</strong></td>
-            </tr>
-          `).join('')}
-          <tr style="background-color: #f0f0f0; font-weight: bold;">
-            <td style="border: 1px solid #ddd; padding: 10px;">CELKOM:</td>
-            <td style="border: 1px solid #ddd; padding: 10px; text-align: right;">${totalWeight}g</td>
-          </tr>
-        </tbody>
-      </table>
+    // Build admin ingredients table for multiple cones
+    const ingredientsTableHTML = conesList.length > 0 ? `
+      ${conesList.map(cone => `
+        <div style="margin-bottom: 20px;">
+          <h3>📦 Kornút #${cone.index} — Balenie: ${cone.capacity}g (Naplnené: ${cone.totalWeight}g)</h3>
+          <table style="width: 100%; border-collapse: collapse; margin-bottom: 10px;">
+            <thead>
+              <tr style="background-color: #ff6b9d; color: white;">
+                <th style="border: 1px solid #ddd; padding: 10px; text-align: left; width: 70%;">Ingrediencia (poradie pridania)</th>
+                <th style="border: 1px solid #ddd; padding: 10px; text-align: right; width: 30%;">Hmotnosť (g)</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${cone.ingredients.map((ing, idx) => `
+                <tr style="background-color: ${idx % 2 === 0 ? '#fff' : '#f9f9f9'};">
+                  <td style="border: 1px solid #ddd; padding: 10px;">${idx + 1}. ${removeDiacritics(ing.name)}</td>
+                  <td style="border: 1px solid #ddd; padding: 10px; text-align: right;"><strong>${ing.weight}g</strong></td>
+                </tr>
+              `).join('')}
+              <tr style="background-color: #f0f0f0; font-weight: bold;">
+                <td style="border: 1px solid #ddd; padding: 10px;">SPOLU KORNÚT #${cone.index}:</td>
+                <td style="border: 1px solid #ddd; padding: 10px; text-align: right;">${cone.totalWeight}g</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      `).join('')}
     ` : '';
 
     // Send email to admin

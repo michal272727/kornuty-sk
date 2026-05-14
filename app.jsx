@@ -38,22 +38,25 @@ function App() {
   const direction = tweaks.direction || 'candy'; // 'candy' | 'editorial' | 'modernist'
 
   const [screen, setScreen] = useState('welcome');
-  const [cart, setCart] = useState([]); // [{ id, weight }]
-  const [capacityTier, setCapacityTier] = useState(0);
+  const [currentCart, setCurrentCart] = useState([]); // items being added to current cone
+  const [currentCapacityTier, setCurrentCapacityTier] = useState(0);
+  const [completedCones, setCompletedCones] = useState([]); // [{ items, capacityTier }, ...]
   const [deliveryMethod, setDeliveryMethod] = useState(LS.get('deliveryMethod', 'courier'));
 
   // Restore from localStorage after hydration + handle Stripe redirect
   useEffect(() => {
     if (hydrated && typeof window !== 'undefined') {
       const savedScreen = LS.get('screen', 'welcome');
-      let savedCart = LS.get('cart', []);
+      let savedCurrent = LS.get('currentCart', []);
       // Migrate old weight format to new weights array format
-      savedCart = savedCart.map(c => c.weights ? c : { ...c, weights: [c.weight] });
-      const savedTier = LS.get('capacityTier', 0);
+      savedCurrent = savedCurrent.map(c => c.weights ? c : { ...c, weights: [c.weight] });
+      const savedCurrentTier = LS.get('currentCapacityTier', 0);
+      const savedCompleted = LS.get('completedCones', []);
 
       // Restore state first
-      if (savedCart.length > 0) setCart(savedCart);
-      if (savedTier > 0) setCapacityTier(savedTier);
+      if (savedCurrent.length > 0) setCurrentCart(savedCurrent);
+      if (savedCurrentTier > 0) setCurrentCapacityTier(savedCurrentTier);
+      if (savedCompleted.length > 0) setCompletedCones(savedCompleted);
 
       // Then check for Stripe redirect
       const params = new URLSearchParams(window.location.search);
@@ -85,37 +88,38 @@ function App() {
   const [showFullCelebration, setShowFullCelebration] = useState(false);
 
   useEffect(() => LS.set('screen', screen), [screen]);
-  useEffect(() => LS.set('cart', cart), [cart]);
-  useEffect(() => LS.set('capacityTier', capacityTier), [capacityTier]);
+  useEffect(() => LS.set('currentCart', currentCart), [currentCart]);
+  useEffect(() => LS.set('currentCapacityTier', currentCapacityTier), [currentCapacityTier]);
+  useEffect(() => LS.set('completedCones', completedCones), [completedCones]);
   useEffect(() => LS.set('orderInfo', orderInfo), [orderInfo]);
   useEffect(() => LS.set('deliveryMethod', deliveryMethod), [deliveryMethod]);
 
-  // Cart helpers
+  // Cart helpers (for current cone being built)
   const cartItems = useMemo(() => {
     if (typeof window === 'undefined') return [];
-    return cart.map(c => ({ ...window.ITEM_LOOKUP[c.id], weight: c.weights ? c.weights.reduce((a, b) => a + b, 0) : c.weight }));
-  }, [cart]);
-  const totalWeight = cart.reduce((s, c) => s + (c.weights ? c.weights.reduce((a, b) => a + b, 0) : c.weight), 0);
+    return currentCart.map(c => ({ ...window.ITEM_LOOKUP[c.id], weight: c.weights ? c.weights.reduce((a, b) => a + b, 0) : c.weight }));
+  }, [currentCart]);
+  const totalWeight = currentCart.reduce((s, c) => s + (c.weights ? c.weights.reduce((a, b) => a + b, 0) : c.weight), 0);
   const subtotal = useMemo(() => {
     if (typeof window === 'undefined') return 0;
     const ingredientsCost = cartItems.reduce((s, i) => s + (i.price * i.weight / i.unit), 0);
-    const baseCost = cart.length > 0 ? window.BASE_CONE_PRICE : 0;
+    const baseCost = currentCart.length > 0 ? window.BASE_CONE_PRICE : 0;
     return baseCost + ingredientsCost;
-  }, [cartItems, cart.length]);
+  }, [cartItems, currentCart.length]);
   const capacity = useMemo(() => {
     if (typeof window === 'undefined') return 500;
-    return window.getActiveCapacity(capacityTier);
-  }, [capacityTier]);
+    return window.getActiveCapacity(currentCapacityTier);
+  }, [currentCapacityTier]);
   const fillPct = Math.min(totalWeight / capacity, 1);
   const isFull = totalWeight >= capacity;
   const canUpgrade = useMemo(() => {
     if (typeof window === 'undefined') return false;
-    return capacityTier < window.CAPACITY_TIERS.length - 1;
-  }, [capacityTier]);
+    return currentCapacityTier < window.CAPACITY_TIERS.length - 1;
+  }, [currentCapacityTier]);
   const nextCapacity = useMemo(() => {
     if (typeof window === 'undefined') return null;
-    return canUpgrade ? window.CAPACITY_TIERS[capacityTier + 1] : null;
-  }, [canUpgrade, capacityTier]);
+    return canUpgrade ? window.CAPACITY_TIERS[currentCapacityTier + 1] : null;
+  }, [canUpgrade, currentCapacityTier]);
 
   // Trigger celebration when crossing into full state
   const wasFullRef = useRef(false);
@@ -128,30 +132,37 @@ function App() {
   }, [isFull, totalWeight]);
 
   const upgradeCapacity = () => {
-    if (canUpgrade) setCapacityTier(t => t + 1);
+    if (canUpgrade) setCurrentCapacityTier(t => t + 1);
   };
 
   const undoLastAdd = () => {
     if (lastCartState) {
-      setCart(lastCartState.cart);
-      setCapacityTier(lastCartState.capacityTier);
+      setCurrentCart(lastCartState.currentCart);
+      setCurrentCapacityTier(lastCartState.currentCapacityTier);
       setLastCartState(null);
       setToast(null);
     }
   };
 
+  const addConeToCart = () => {
+    if (currentCart.length === 0) return;
+    setCompletedCones(prev => [...prev, { items: currentCart, capacityTier: currentCapacityTier }]);
+    setCurrentCart([]);
+    setCurrentCapacityTier(0);
+  };
+
   const hasMrazom = useMemo(() => {
     if (typeof window === 'undefined') return false;
-    return cart.some(c => window.ITEM_LOOKUP[c.id]?.exclusive);
-  }, [cart]);
+    return currentCart.some(c => window.ITEM_LOOKUP[c.id]?.exclusive);
+  }, [currentCart]);
   const hasNonMrazom = useMemo(() => {
     if (typeof window === 'undefined') return false;
-    return cart.some(c => !window.ITEM_LOOKUP[c.id]?.exclusive);
-  }, [cart]);
+    return currentCart.some(c => !window.ITEM_LOOKUP[c.id]?.exclusive);
+  }, [currentCart]);
 
   // Filter categories: if cart has mrazom items, only mrazom available; if has non-mrazom, mrazom locked
   const isCategoryLocked = (catId) => {
-    if (cart.length === 0) return false;
+    if (currentCart.length === 0) return false;
     if (catId === 'mrazom') return hasNonMrazom;
     return hasMrazom;
   };
@@ -161,22 +172,22 @@ function App() {
 
     // Default weight logic: segment 1 & 2 = 50g, segment 3+ = 100g
     if (weight === undefined) {
-      // Count total segments already in cart
-      const totalSegments = cart.reduce((sum, c) => sum + (c.weights ? c.weights.length : 1), 0);
+      // Count total segments already in current cart
+      const totalSegments = currentCart.reduce((sum, c) => sum + (c.weights ? c.weights.length : 1), 0);
       weight = totalSegments < 2 ? 50 : 100;
     }
 
-    const currentTotal = cart.reduce((s, c) => s + (c.weights ? c.weights.reduce((a, b) => a + b, 0) : c.weight), 0);
-    const currentCap = window.getActiveCapacity(capacityTier);
+    const currentTotal = currentCart.reduce((s, c) => s + (c.weights ? c.weights.reduce((a, b) => a + b, 0) : c.weight), 0);
+    const currentCap = window.getActiveCapacity(currentCapacityTier);
     // Auto-upgrade if would overflow
     if (currentTotal + weight > currentCap) {
-      if (capacityTier < window.CAPACITY_TIERS.length - 1) {
+      if (currentCapacityTier < window.CAPACITY_TIERS.length - 1) {
         // bump to next tier that can hold the new total
-        let newTier = capacityTier;
+        let newTier = currentCapacityTier;
         while (newTier < window.CAPACITY_TIERS.length - 1 && window.CAPACITY_TIERS[newTier] < currentTotal + weight) {
           newTier++;
         }
-        setCapacityTier(newTier);
+        setCurrentCapacityTier(newTier);
       } else {
         setToast('Maximálny kornút (1500g). Viac sa nezmestí.');
         setTimeout(() => setToast(null), 2200);
@@ -184,9 +195,9 @@ function App() {
       }
     }
     // Save current cart state for undo
-    setLastCartState({ cart, capacityTier });
+    setLastCartState({ currentCart, currentCapacityTier });
 
-    setCart(prev => {
+    setCurrentCart(prev => {
       const existing = prev.find(c => c.id === id);
       if (existing) {
         return prev.map(c => c.id === id ? { ...c, weights: [...(c.weights || [c.weight]), weight] } : c);
@@ -201,10 +212,10 @@ function App() {
     setTimeout(() => setRecentlyAdded(null), 1500);
     setTimeout(() => setLastAddedId(null), 1200);
     setTimeout(() => setToast(null), 4000);
-  }, [cart, capacityTier, setCart, setCapacityTier, setToast, setRecentlyAdded, setAnimatingId, setLastAddedId]);
+  }, [currentCart, currentCapacityTier, setCurrentCart, setCurrentCapacityTier, setToast, setRecentlyAdded, setAnimatingId, setLastAddedId]);
 
   const getOptimalTier = useCallback((newTotal) => {
-    if (typeof window === 'undefined') return capacityTier;
+    if (typeof window === 'undefined') return currentCapacityTier;
     let optimalTier = 0;
     for (let i = 0; i < window.CAPACITY_TIERS.length; i++) {
       if (window.CAPACITY_TIERS[i] >= newTotal) {
@@ -213,10 +224,10 @@ function App() {
       }
     }
     return optimalTier;
-  }, [capacityTier]);
+  }, [currentCapacityTier]);
 
   const removeItem = (id) => {
-    setCart(prev => {
+    setCurrentCart(prev => {
       const updated = prev.map(c => {
         if (c.id === id) {
           // Remove last segment from this item
@@ -229,8 +240,8 @@ function App() {
 
       const newTotal = updated.reduce((s, c) => s + (c.weights ? c.weights.reduce((a, b) => a + b, 0) : c.weight), 0);
       const optimalTier = getOptimalTier(newTotal);
-      if (optimalTier < capacityTier) {
-        setCapacityTier(optimalTier);
+      if (optimalTier < currentCapacityTier) {
+        setCurrentCapacityTier(optimalTier);
       }
       return updated;
     });
@@ -240,19 +251,19 @@ function App() {
     if (weight <= 0) {
       removeItem(id);
     } else {
-      setCart(prev => {
+      setCurrentCart(prev => {
         const updated = prev.map(c => c.id === id ? { ...c, weights: [weight] } : c);
         const newTotal = updated.reduce((s, c) => s + (c.weights ? c.weights.reduce((a, b) => a + b, 0) : c.weight), 0);
         const optimalTier = getOptimalTier(newTotal);
-        if (optimalTier < capacityTier) {
-          setCapacityTier(optimalTier);
+        if (optimalTier < currentCapacityTier) {
+          setCurrentCapacityTier(optimalTier);
         }
         return updated;
       });
     }
   };
 
-  const clearCart = () => { setCart([]); setCapacityTier(0); };
+  const clearCart = () => { setCurrentCart([]); setCurrentCapacityTier(0); };
 
   // Direction class on root
   return (
@@ -276,14 +287,14 @@ function App() {
             )}
           </div>
         )}
-        {(!hydrated || screen === 'welcome') && <WelcomeScreen onStart={() => setScreen('builder')} direction={direction} cart={cart} setScreen={setScreen} />}
+        {(!hydrated || screen === 'welcome') && <WelcomeScreen onStart={() => setScreen('builder')} direction={direction} completedCones={completedCones} setScreen={setScreen} />}
         {hydrated && screen === 'builder' && (
           <BuilderScreen
-            cart={cart}
+            currentCart={currentCart}
             cartItems={cartItems}
             totalWeight={totalWeight}
             subtotal={subtotal}
-            capacityTier={capacityTier}
+            currentCapacityTier={currentCapacityTier}
             capacity={capacity}
             fillPct={fillPct}
             isFull={isFull}
@@ -302,31 +313,24 @@ function App() {
             animatingId={animatingId}
             lastAddedId={lastAddedId}
             onBack={() => setScreen('welcome')}
-            onContinue={() => setScreen('cart')}
+            onAddToCones={() => { addConeToCart(); setScreen('cart'); }}
+            onViewCart={completedCones.length > 0 ? () => setScreen('cart') : null}
             direction={direction}
           />
         )}
         {hydrated && screen === 'cart' && (
           <CartScreen
-            cart={cart}
-            cartItems={cartItems}
-            totalWeight={totalWeight}
-            subtotal={subtotal}
-            capacityTier={capacityTier}
-            updateWeight={updateWeight}
-            removeItem={removeItem}
-            clearCart={clearCart}
-            coneCount={coneCount}
-            setConeCount={setConeCount}
+            completedCones={completedCones}
+            setCompletedCones={setCompletedCones}
             onBack={() => setScreen('builder')}
+            onAddAnother={() => setScreen('builder')}
             onContinue={() => setScreen('checkout')}
             direction={direction}
           />
         )}
         {hydrated && screen === 'checkout' && (
           <CheckoutScreen
-            subtotal={subtotal * coneCount}
-            coneCount={coneCount}
+            completedCones={completedCones}
             orderInfo={orderInfo}
             setOrderInfo={setOrderInfo}
             deliveryMethod={deliveryMethod}
@@ -334,20 +338,14 @@ function App() {
             onBack={() => setScreen('cart')}
             onComplete={() => setScreen('success')}
             direction={direction}
-            cart={cart}
-            cartItems={cartItems}
           />
         )}
         {hydrated && screen === 'success' && (
           <SuccessScreen
-            cartItems={cartItems}
-            coneCount={coneCount}
-            subtotal={subtotal * coneCount}
-            total={subtotal * coneCount + (deliveryMethod === 'pickup' ? 0 : window.SHIPPING)}
-            shipping={deliveryMethod === 'pickup' ? 0 : window.SHIPPING}
+            completedCones={completedCones}
             deliveryMethod={deliveryMethod}
             orderInfo={orderInfo}
-            onRestart={() => { setCart([]); LS.set('cart', []); setScreen('welcome'); setDeliveryMethod('courier'); }}
+            onRestart={() => { setCompletedCones([]); setCurrentCart([]); setCurrentCapacityTier(0); setScreen('welcome'); setDeliveryMethod('courier'); }}
             direction={direction}
           />
         )}
@@ -357,7 +355,7 @@ function App() {
 }
 
 // ============ WELCOME ============
-function WelcomeScreen({ onStart, direction, cart, setScreen }) {
+function WelcomeScreen({ onStart, direction, completedCones, setScreen }) {
   return (
     <div className="screen welcome" data-screen-label="Welcome">
       <div className="welcome-bg">
@@ -394,9 +392,9 @@ function WelcomeScreen({ onStart, direction, cart, setScreen }) {
           <ArrowIcon />
         </button>
 
-        {cart.length > 0 && (
+        {completedCones.length > 0 && (
           <button className="btn-ghost" onClick={() => setScreen('cart')}>
-            Pokračovať v rozpracovanom · {cart.length}
+            Pokračovať v objednavke · {completedCones.length}
           </button>
         )}
 
@@ -421,11 +419,11 @@ function Feature({ icon, label }) {
 
 // ============ BUILDER ============
 function BuilderScreen({
-  cart, cartItems, totalWeight, subtotal,
-  capacityTier, capacity, fillPct, isFull, canUpgrade, nextCapacity, upgradeCapacity, showFullCelebration,
+  currentCart, cartItems, totalWeight, subtotal,
+  currentCapacityTier, capacity, fillPct, isFull, canUpgrade, nextCapacity, upgradeCapacity, showFullCelebration,
   activeCategory, setActiveCategory, isCategoryLocked, hasMrazom,
   addItem, removeItem, updateWeight, recentlyAdded, animatingId, lastAddedId,
-  onBack, onContinue, direction,
+  onBack, onAddToCones, onViewCart, direction,
 }) {
   const cat = window.CATALOG[activeCategory];
   const [search, setSearch] = useState('');
@@ -437,7 +435,7 @@ function BuilderScreen({
       )
     : cat.items;
 
-  const inCartIds = new Set(cart.map(c => c.id));
+  const inCartIds = new Set(currentCart.map(c => c.id));
 
   return (
     <div className="screen builder" data-screen-label="Builder">
@@ -446,21 +444,21 @@ function BuilderScreen({
         <div className="builder-title-wrap">
           <div className="builder-title">Tvoj kornút</div>
           <div className="builder-meta">
-            {cart.length > 0
-              ? `${cart.length} ingrediencí · ${totalWeight}g`
+            {currentCart.length > 0
+              ? `${currentCart.length} ingrediencí · ${totalWeight}g`
               : 'pridaj ingredienciu'}
           </div>
         </div>
-        <button className="icon-btn cart-btn" onClick={onContinue}>
+        <button className="icon-btn cart-btn" onClick={onViewCart} disabled={!onViewCart}>
           <BagIcon />
-          {cart.length > 0 && <span className="cart-dot">{cart.length}</span>}
+          {currentCart.length > 0 && <span className="cart-dot">{currentCart.length}</span>}
         </button>
       </header>
 
       {/* Cone preview */}
       <div className={`cone-preview ${isFull ? 'full' : ''}`}>
         <div className="cone-preview-inner">
-          <ConeViz items={cartItems} size="md" capacityTier={capacityTier} lastAddedId={lastAddedId} />
+          <ConeViz items={cartItems} size="md" capacityTier={currentCapacityTier} lastAddedId={lastAddedId} />
         </div>
         <div className="cone-stats">
           <div className="stat">
@@ -559,7 +557,7 @@ function BuilderScreen({
       <div className="items-grid">
         {visibleItems.map(item => {
           const inCart = inCartIds.has(item.id);
-          const cartEntry = cart.find(c => c.id === item.id);
+          const cartEntry = currentCart.find(c => c.id === item.id);
           const totalWeight = cartEntry?.weights ? cartEntry.weights.reduce((a, b) => a + b, 0) : 0;
           // Find the category and unit for this item
           const itemCategory = Object.values(window.CATALOG).find(c => c.items.some(i => i.id === item.id));
@@ -582,14 +580,14 @@ function BuilderScreen({
       </div>
 
       {/* Sticky CTA */}
-      {cart.length > 0 && (
+      {currentCart.length > 0 && (
         <div className="sticky-bar">
           <div className="sticky-info">
-            <div className="sticky-count">{cart.length} ingrediencií · {totalWeight}g</div>
+            <div className="sticky-count">{currentCart.length} ingrediencií · {totalWeight}g</div>
             <div className="sticky-price">{subtotal.toFixed(2)} €</div>
           </div>
-          <button className="btn-primary" onClick={onContinue}>
-            Do košíka <ArrowIcon />
+          <button className="btn-primary" onClick={onAddToCones}>
+            Pokračovať <ArrowIcon />
           </button>
         </div>
       )}
@@ -629,8 +627,41 @@ function ItemCard({ item, unit, inCart, weight, onAdd, onRemove, onUpdate, anima
 }
 
 // ============ CART ============
-function CartScreen({ cart, cartItems, totalWeight, subtotal, capacityTier, updateWeight, removeItem, clearCart, coneCount, setConeCount, onBack, onContinue, direction }) {
-  const total = subtotal * coneCount;
+function CartScreen({ completedCones, setCompletedCones, onBack, onAddAnother, onContinue, direction }) {
+  if (!completedCones || completedCones.length === 0) {
+    return (
+      <div className="screen cart" data-screen-label="Cart">
+        <header className="builder-header">
+          <button className="icon-btn" onClick={onBack}><BackIcon /></button>
+          <div className="builder-title-wrap">
+            <div className="builder-title">Tvoj košík</div>
+            <div className="builder-meta">prázdny</div>
+          </div>
+          <div style={{ width: 40 }} />
+        </header>
+
+          <div className="empty-cone">
+            <ConeViz items={[]} size="md" />
+          </div>
+          <h3>Tvoj košík je zatiaľ prázdny</h3>
+          <p>Vytvor si svoj prvý kornút.</p>
+          <button className="btn-primary" onClick={onBack}>Začať miešať</button>
+        </div>
+      );
+  }
+
+  const totalPrice = completedCones.reduce((sum, cone) => {
+    const ingredientsCost = cone.items.reduce((s, item) => {
+      if (typeof window === 'undefined') return s;
+      const itemData = window.ITEM_LOOKUP[item.id];
+      const weight = item.weights ? item.weights.reduce((a, b) => a + b, 0) : item.weight;
+      return s + (itemData.price * weight / itemData.unit);
+    }, 0);
+    const baseCost = window.BASE_CONE_PRICE || 0;
+    return sum + baseCost + ingredientsCost;
+  }, 0);
+
+  const totalShipping = window.SHIPPING || 0;
 
   return (
     <div className="screen cart" data-screen-label="Cart">
@@ -638,88 +669,99 @@ function CartScreen({ cart, cartItems, totalWeight, subtotal, capacityTier, upda
         <button className="icon-btn" onClick={onBack}><BackIcon /></button>
         <div className="builder-title-wrap">
           <div className="builder-title">Tvoj košík</div>
-          <div className="builder-meta">{cart.length === 0 ? 'prázdny' : `${cart.length} ingrediencií · ${totalWeight}g`}</div>
+          <div className="builder-meta">{completedCones.length} kornútov</div>
         </div>
         <div style={{ width: 40 }} />
       </header>
 
-      {cart.length === 0 ? (
-        <div className="empty-state">
-          <div className="empty-cone">
-            <ConeViz items={[]} size="md" />
-          </div>
-          <h3>Tvoj kornút je zatiaľ prázdny</h3>
-          <p>Pridaj si pár dobrôt.</p>
-          <button className="btn-primary" onClick={onBack}>Začať miešať</button>
-        </div>
-      ) : (
-        <>
-          <div className="cart-cone">
-            <ConeViz items={cartItems} size="md" capacityTier={capacityTier} />
-          </div>
+      <div className="cart-list">
+        {completedCones.map((cone, idx) => {
+          const coneItems = cone.items.map(c => ({ ...window.ITEM_LOOKUP[c.id], weight: c.weights ? c.weights.reduce((a, b) => a + b, 0) : c.weight }));
+          const conPrice = coneItems.reduce((s, i) => s + (i.price * i.weight / i.unit), 0) + (window.BASE_CONE_PRICE || 0);
 
-          <div className="cart-list">
-            {cartItems.map(it => (
-              <div key={it.id} className="cart-row">
-                <div className="cart-illus" style={{ background: `${it.color}26` }}>
-                  <IngIllus id={it.id} color={it.color} />
-                </div>
-                <div className="cart-info">
-                  <div className="cart-name">{it.name}</div>
-                  <div className="cart-price">{(it.price * it.weight / it.unit).toFixed(2)} €</div>
-                </div>
-                <div className="cart-weight">{it.weight}g</div>
+          return (
+            <div key={idx} className="cone-group" style={{ marginBottom: '20px', paddingBottom: '20px', borderBottom: '1px solid #ddd' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                <h4 style={{ margin: 0 }}>Kornút #{idx + 1}</h4>
+                <button
+                  onClick={() => setCompletedCones(prev => prev.filter((_, i) => i !== idx))}
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '18px', padding: '4px 8px' }}
+                  title="Odstrániť"
+                >🗑️</button>
               </div>
-            ))}
-          </div>
 
-          <div className="cone-count-wrap">
-            <div>
-              <div className="ccc-title">Počet kornútov</div>
-              <div className="ccc-sub">Rovnaké zloženie</div>
+              <div style={{ display: 'flex', gap: '12px', marginBottom: '12px' }}>
+                <div style={{ flex: 0, width: '80px' }}>
+                  <ConeViz items={coneItems} size="sm" capacityTier={cone.capacityTier} />
+                </div>
+                <div style={{ flex: 1 }}>
+                  {coneItems.map(it => (
+                    <div key={it.id} style={{ fontSize: '13px', display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                      <span>{it.name}</span>
+                      <span style={{ color: '#666' }}>{it.weight}g</span>
+                    </div>
+                  ))}
+                  <div style={{ marginTop: '8px', paddingTop: '8px', borderTop: '1px solid #eee', fontWeight: 'bold', fontSize: '14px' }}>
+                    {conPrice.toFixed(2)} €
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="item-stepper">
-              <button onClick={() => setConeCount(Math.max(1, coneCount - 1))}><MinusIcon /></button>
-              <span>{coneCount}×</span>
-              <button onClick={() => setConeCount(coneCount + 1)}><PlusIcon /></button>
-            </div>
-          </div>
+          );
+        })}
+      </div>
 
-          <div className="summary">
-            <div className="summary-row">
-              <span>Cena za 1 kornút</span>
-              <span>{subtotal.toFixed(2)} €</span>
-            </div>
-            <div className="summary-row">
-              <span>Počet</span>
-              <span>{coneCount}×</span>
-            </div>
-            <div className="summary-row">
-              <span>Poštovné</span>
-              <span>{window.SHIPPING.toFixed(2)} €</span>
-            </div>
-            <div className="summary-row total">
-              <span>Spolu</span>
-              <span>{(total + window.SHIPPING).toFixed(2)} €</span>
-            </div>
-          </div>
+      <div className="summary">
+        <div className="summary-row">
+          <span>Počet kornútov</span>
+          <span>{completedCones.length}×</span>
+        </div>
+        <div className="summary-row">
+          <span>Cena</span>
+          <span>{totalPrice.toFixed(2)} €</span>
+        </div>
+        <div className="summary-row">
+          <span>Poštovné</span>
+          <span>{totalShipping.toFixed(2)} €</span>
+        </div>
+        <div className="summary-row total">
+          <span>Spolu</span>
+          <span>{(totalPrice + totalShipping).toFixed(2)} €</span>
+        </div>
+      </div>
 
-          <div className="cart-actions">
-            <button className="btn-primary btn-lg" onClick={onContinue}>
-              Pokračovať <ArrowIcon />
-            </button>
-          </div>
-        </>
-      )}
+      <div className="cart-actions">
+        <button className="btn-secondary btn-lg" onClick={onAddAnother}>
+          Vytvoriť ďalší kornút <ArrowIcon />
+        </button>
+        <button className="btn-primary btn-lg" onClick={onContinue}>
+          Pokračovať <ArrowIcon />
+        </button>
+      </div>
     </div>
   );
 }
 
 // ============ CHECKOUT ============
-function CheckoutScreen({ subtotal, coneCount, orderInfo, setOrderInfo, deliveryMethod, setDeliveryMethod, onBack, onComplete, direction, cart, cartItems }) {
+function CheckoutScreen({ completedCones, orderInfo, setOrderInfo, deliveryMethod, setDeliveryMethod, onBack, onComplete, direction }) {
   const [payment, setPayment] = useState('card');
   const [loading, setLoading] = useState(false);
-  const total = subtotal + (deliveryMethod === 'pickup' ? 0 : window.SHIPPING);
+
+  const subtotal = useMemo(() => {
+    return completedCones.reduce((sum, cone) => {
+      const ingredientsCost = cone.items.reduce((s, item) => {
+        if (typeof window === 'undefined') return s;
+        const itemData = window.ITEM_LOOKUP[item.id];
+        const weight = item.weights ? item.weights.reduce((a, b) => a + b, 0) : item.weight;
+        return s + (itemData.price * weight / itemData.unit);
+      }, 0);
+      const baseCost = window.BASE_CONE_PRICE || 0;
+      return sum + baseCost + ingredientsCost;
+    }, 0);
+  }, [completedCones]);
+
+  const shipping = deliveryMethod === 'pickup' ? 0 : (window.SHIPPING || 4.00);
+  const total = subtotal + shipping;
 
   const update = (k, v) => setOrderInfo({ ...orderInfo, [k]: v });
 
@@ -734,8 +776,7 @@ function CheckoutScreen({ subtotal, coneCount, orderInfo, setOrderInfo, delivery
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          cartItems,
-          coneCount,
+          cones: completedCones,
           delivery: deliveryMethod,
           payment,
           orderInfo,
@@ -808,12 +849,12 @@ function CheckoutScreen({ subtotal, coneCount, orderInfo, setOrderInfo, delivery
 
       <div className="summary">
         <div className="summary-row">
-          <span>Kornúty ({coneCount}×)</span>
+          <span>Kornúty ({completedCones.length}×)</span>
           <span>{subtotal.toFixed(2)} €</span>
         </div>
         <div className="summary-row">
           <span>Doručenie</span>
-          <span>{deliveryMethod === 'pickup' ? '0.00' : window.SHIPPING.toFixed(2)} €</span>
+          <span>{shipping.toFixed(2)} €</span>
         </div>
         <div className="summary-row total">
           <span>Spolu</span>
@@ -870,8 +911,27 @@ function OptionRow({ checked, onClick, title, sub, price }) {
 }
 
 // ============ SUCCESS ============
-function SuccessScreen({ cartItems, coneCount, subtotal, total, shipping, deliveryMethod, orderInfo, onRestart, direction }) {
+function SuccessScreen({ completedCones, deliveryMethod, orderInfo, onRestart, direction }) {
   const orderNum = useMemo(() => 'KOR-' + Math.floor(Math.random() * 90000 + 10000), []);
+
+  const subtotal = useMemo(() => {
+    return completedCones.reduce((sum, cone) => {
+      const ingredientsCost = cone.items.reduce((s, item) => {
+        if (typeof window === 'undefined') return s;
+        const itemData = window.ITEM_LOOKUP[item.id];
+        const weight = item.weights ? item.weights.reduce((a, b) => a + b, 0) : item.weight;
+        return s + (itemData.price * weight / itemData.unit);
+      }, 0);
+      const baseCost = window.BASE_CONE_PRICE || 0;
+      return sum + baseCost + ingredientsCost;
+    }, 0);
+  }, [completedCones]);
+
+  const shipping = deliveryMethod === 'pickup' ? 0 : (window.SHIPPING || 4.00);
+  const total = subtotal + shipping;
+
+  const allItems = completedCones.flatMap(cone => cone.items.map(item => ({ ...window.ITEM_LOOKUP[item.id], weight: item.weights ? item.weights.reduce((a, b) => a + b, 0) : item.weight })));
+
   return (
     <div className="screen success" data-screen-label="Success">
       <div className="success-confetti">
@@ -886,7 +946,7 @@ function SuccessScreen({ cartItems, coneCount, subtotal, total, shipping, delive
 
       <div className="success-content">
         <div className="success-cone">
-          <ConeViz items={cartItems} size="md" />
+          {completedCones[0] && <ConeViz items={allItems} size="md" />}
         </div>
         <div className="success-badge">
           <CheckIcon /> Objednávka prijatá
@@ -901,11 +961,22 @@ function SuccessScreen({ cartItems, coneCount, subtotal, total, shipping, delive
           <h3>Vaša objednávka</h3>
 
           <div className="order-items">
-            {cartItems.map(item => (
-              <div key={item.id} className="order-item">
-                <div className="order-item-name">{item.name}</div>
-                <div className="order-item-detail">{item.weight}g × {coneCount}</div>
-                <div className="order-item-price">{(item.price * item.weight / item.unit * coneCount).toFixed(2)} €</div>
+            {completedCones.map((cone, coneIdx) => (
+              <div key={coneIdx}>
+                <div style={{ fontWeight: 'bold', fontSize: '14px', marginTop: coneIdx > 0 ? '12px' : 0, marginBottom: '8px' }}>
+                  Kornút #{coneIdx + 1}
+                </div>
+                {cone.items.map(item => {
+                  const itemData = window.ITEM_LOOKUP[item.id];
+                  const weight = item.weights ? item.weights.reduce((a, b) => a + b, 0) : item.weight;
+                  return (
+                    <div key={item.id} className="order-item">
+                      <div className="order-item-name">{itemData.name}</div>
+                      <div className="order-item-detail">{weight}g</div>
+                      <div className="order-item-price">{(itemData.price * weight / itemData.unit).toFixed(2)} €</div>
+                    </div>
+                  );
+                })}
               </div>
             ))}
           </div>
@@ -920,22 +991,22 @@ function SuccessScreen({ cartItems, coneCount, subtotal, total, shipping, delive
               <span>{shipping.toFixed(2)} €</span>
             </div>
             <div className="breakdown-row total">
-              <span>Celkem</span>
+              <span>Spolu</span>
               <span>{total.toFixed(2)} €</span>
             </div>
           </div>
 
           <div className="order-meta">
             <div className="meta-item">
-              <span className="meta-label">Jméno</span>
+              <span className="meta-label">Meno</span>
               <span>{orderInfo.name}</span>
             </div>
             <div className="meta-item">
-              <span className="meta-label">Doručení</span>
+              <span className="meta-label">Doručenie</span>
               <span>
                 {deliveryMethod === 'pickup'
-                  ? 'Osobní odběr v Krupině'
-                  : `Kuriér (1–3 pracovní dni)`}
+                  ? 'Osobný odber v Krupine'
+                  : `Kuriér (1–3 pracovné dni)`}
               </span>
             </div>
           </div>
