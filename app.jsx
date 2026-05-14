@@ -53,10 +53,10 @@ function App() {
       const savedCurrentTier = LS.get('currentCapacityTier', 0);
       const savedCompleted = LS.get('completedCones', []);
 
-      // Restore state first
-      if (savedCurrent.length > 0) setCurrentCart(savedCurrent);
+      // Always restore state
+      setCurrentCart(savedCurrent);
       if (savedCurrentTier > 0) setCurrentCapacityTier(savedCurrentTier);
-      if (savedCompleted.length > 0) setCompletedCones(savedCompleted);
+      setCompletedCones(savedCompleted);
 
       // Then check for Stripe redirect
       const params = new URLSearchParams(window.location.search);
@@ -682,7 +682,12 @@ function CartScreen({ completedCones, setCompletedCones, onBack, onAddAnother, o
           return (
             <div key={idx} className="cone-group" style={{ marginBottom: '20px', paddingBottom: '20px', borderBottom: '1px solid #ddd' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                <h4 style={{ margin: 0 }}>Kornút #{idx + 1}</h4>
+                <div>
+                  <h4 style={{ margin: 0 }}>Kornút #{idx + 1}</h4>
+                  <div style={{ fontSize: '12px', color: '#666', marginTop: '2px' }}>
+                    Veľkosť: {window.CAPACITY_TIERS[cone.capacityTier]}g
+                  </div>
+                </div>
                 <button
                   onClick={() => setCompletedCones(prev => prev.filter((_, i) => i !== idx))}
                   style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '18px', padding: '4px 8px' }}
@@ -847,6 +852,28 @@ function CheckoutScreen({ completedCones, orderInfo, setOrderInfo, deliveryMetho
         </div>
       </div>
 
+      <div className="form-section">
+        <h3>Tvoja objednávka</h3>
+        <div style={{ fontSize: '14px', lineHeight: '1.6' }}>
+          {completedCones.map((cone, idx) => {
+            const conePrice = cone.items.reduce((s, item) => {
+              if (typeof window === 'undefined') return s;
+              const itemData = window.ITEM_LOOKUP[item.id];
+              const weight = item.weights ? item.weights.reduce((a, b) => a + b, 0) : item.weight;
+              return s + (itemData.price * weight / itemData.unit);
+            }, 0) + (window.BASE_CONE_PRICE || 0);
+            return (
+              <div key={idx} style={{ marginBottom: '12px', paddingBottom: '12px', borderBottom: '1px solid #eee' }}>
+                <div style={{ fontWeight: 'bold' }}>Kornút #{idx + 1} — {window.CAPACITY_TIERS[cone.capacityTier]}g</div>
+                <div style={{ color: '#666', fontSize: '13px', marginTop: '4px' }}>
+                  {cone.items.length} ingrediencií · {conePrice.toFixed(2)} €
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
       <div className="summary">
         <div className="summary-row">
           <span>Kornúty ({completedCones.length}×)</span>
@@ -963,8 +990,11 @@ function SuccessScreen({ completedCones, deliveryMethod, orderInfo, onRestart, d
           <div className="order-items">
             {completedCones.map((cone, coneIdx) => (
               <div key={coneIdx}>
-                <div style={{ fontWeight: 'bold', fontSize: '14px', marginTop: coneIdx > 0 ? '12px' : 0, marginBottom: '8px' }}>
+                <div style={{ fontWeight: 'bold', fontSize: '14px', marginTop: coneIdx > 0 ? '12px' : 0, marginBottom: '4px' }}>
                   Kornút #{coneIdx + 1}
+                </div>
+                <div style={{ fontSize: '12px', color: '#666', marginBottom: '8px' }}>
+                  Veľkosť: {window.CAPACITY_TIERS[cone.capacityTier]}g
                 </div>
                 {cone.items.map(item => {
                   const itemData = window.ITEM_LOOKUP[item.id];
