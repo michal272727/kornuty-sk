@@ -65,11 +65,8 @@ export default async function handler(req, res) {
         zip: orderInfo.zip,
         delivery,
         coneCount,
-        ingredients: JSON.stringify(cartItems.map(item => ({
-          name: item.price_data?.product_data?.name || item.name,
-          weight: item.price_data?.unit_amount ? ((item.price_data.unit_amount * item.quantity) / 100).toFixed(2) : 'N/A',
-          price: item.price_data?.unit_amount ? ((item.price_data.unit_amount * item.quantity) / 100).toFixed(2) : 'N/A',
-        }))),
+        ingredientIds: cartItems.map(item => item.id).join(','),
+        ingredientWeights: cartItems.map(item => item.weight).join(','),
       },
     });
 

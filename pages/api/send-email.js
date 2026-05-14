@@ -145,14 +145,134 @@ export default async function handler(req, res) {
     // Get customer email from multiple sources
     const customerEmail = session.customer_email || session.customer?.email || session.metadata?.email;
 
-    // Parse ingredients from metadata
+    // Parse ingredients from metadata (new compact format)
     let ingredientsList = [];
     try {
-      if (session.metadata?.ingredients) {
-        ingredientsList = JSON.parse(session.metadata.ingredients);
+      if (session.metadata?.ingredientIds && session.metadata?.ingredientWeights) {
+        const ids = session.metadata.ingredientIds.split(',');
+        const weights = session.metadata.ingredientWeights.split(',').map(w => parseFloat(w));
+
+        // Build ingredient lookup from CATALOG
+        const CATALOG = {
+          ovocie: [
+            { id: 'ananas', name: 'Ananás kandizovaný' },
+            { id: 'banan_chips', name: 'Banánové chipsy' },
+            { id: 'brusnice', name: 'Brusnice sušené' },
+            { id: 'datle', name: 'Ďatle' },
+            { id: 'figy', name: 'Figy sušené' },
+            { id: 'goji', name: 'Goji' },
+            { id: 'hrozno_zlate', name: 'Hrozienka zlaté JUMBO' },
+            { id: 'hrozno_sult', name: 'Hrozienka Sultánky' },
+            { id: 'ibistek', name: 'Kandizovaný ibištek' },
+            { id: 'kokos_chips', name: 'Kokosové chipsy' },
+            { id: 'marhule_nes', name: 'Marhule nesýrené' },
+            { id: 'marhule', name: 'Marhule sušené' },
+            { id: 'papaja', name: 'Papája kandizovaná' },
+            { id: 'slivka', name: 'Slivka sušená' },
+            { id: 'zazvor', name: 'Zázvor kandizovaný' },
+            { id: 'cerne', name: 'Čerešne sladené' },
+          ],
+          orechy: [
+            { id: 'arasid', name: 'Arašidy' },
+            { id: 'kesu', name: 'Kešu' },
+            { id: 'lieskove', name: 'Lieskové orechy' },
+            { id: 'makadam', name: 'Makadámové orechy' },
+            { id: 'mandle', name: 'Mandle' },
+            { id: 'mandle_b', name: 'Mandle blanžírované' },
+            { id: 'para', name: 'Para orechy' },
+            { id: 'pekan', name: 'Pekanové orechy' },
+            { id: 'pinia', name: 'Píniové oriešky' },
+            { id: 'pistacie', name: 'Pistácie solené' },
+            { id: 'vlasske', name: 'Vlašské orechy' },
+          ],
+          cokolada: [
+            { id: 'arasid_ml', name: 'Arašidy v mliečnej čokoláde' },
+            { id: 'arasid_jog', name: 'Arašidy v jogurte' },
+            { id: 'brusn_h', name: 'Brusnice v horkej čokoláde' },
+            { id: 'cokoocka', name: 'Čokoočká' },
+            { id: 'hrozno_jog', name: 'Hrozienka v jogurte' },
+            { id: 'hrozno_ml', name: 'Hrozienka v mliečnej čokoláde' },
+            { id: 'kavove', name: 'Kávové hrudky' },
+            { id: 'kesu_h', name: 'Kešu v horkej čokoláde' },
+            { id: 'liesk_ml', name: 'Lieskovce v mliečnej čokoláde' },
+            { id: 'liesk_sk', name: 'Lieskovce v mliečnej čokoláde a škorici' },
+            { id: 'mandle_ml', name: 'Mandle v mliečnej čokoláde' },
+            { id: 'mandle_sk', name: 'Mandle v mliečnej čokoláde a škorici' },
+            { id: 'mandle_kar', name: 'Mandle v slanom karamele' },
+            { id: 'mandle_h', name: 'Mandle v horkej čokoláde' },
+            { id: 'mandle_jah', name: 'Mandle v jahodovej čokoláde' },
+            { id: 'ovoc_zele', name: 'Ovocné želé v čokoláde' },
+            { id: 'slnecn_c', name: 'Slnečnica v čokoláde' },
+            { id: 'visne_h', name: 'Višne v horkej čokoláde' },
+          ],
+          cukrovinky: [
+            { id: 'broskyne', name: 'Broskyňové srdiečka' },
+            { id: 'cola', name: 'Cola fľašky' },
+            { id: 'cer_zele', name: 'Čerešničky' },
+            { id: 'karamel', name: 'Karamelové kocky' },
+            { id: 'ovocny_k', name: 'Ovocný komprimát' },
+            { id: 'kysle_hr', name: 'Kyslé hranolčeky' },
+            { id: 'kysle_hus', name: 'Kyslé húsenice' },
+            { id: 'kysle_hv', name: 'Kyslé hviezdičky' },
+            { id: 'kysle_p', name: 'Kyslé pásiky' },
+            { id: 'malina_z', name: 'Malinové želé' },
+            { id: 'mega_med', name: 'Mega medvede' },
+            { id: 'melon', name: 'Melónové' },
+            { id: 'mini_med', name: 'Mini medvede' },
+            { id: 'mini_zv', name: 'Mini zvieratká' },
+            { id: 'neon', name: 'Neónové cukríky' },
+            { id: 'ostr', name: 'Ostružiny' },
+            { id: 'ostr_p', name: 'Plastické ostružiny' },
+            { id: 'ovoc_zele_v', name: 'Veľké ovocné želé' },
+            { id: 'ovo', name: 'Ovo pecky' },
+            { id: 'pendrek', name: 'Pendrekové kocky' },
+            { id: 'sovicky', name: 'Sovičky' },
+            { id: 'spuntici', name: 'Špuntíci' },
+            { id: 'tropical', name: 'Tropical' },
+            { id: 'zuby', name: 'Zuby' },
+            { id: 'zabky', name: 'Žabky' },
+            { id: 'cerviky', name: 'Červíky' },
+            { id: 'hady', name: 'Hady' },
+            { id: 'vajicka', name: 'Vajíčka' },
+          ],
+          slane: [
+            { id: 'aras_was', name: 'Arašidy wasabi' },
+            { id: 'cvikla', name: 'Cvikľové chipsy' },
+            { id: 'chia', name: 'Chia chipsy' },
+            { id: 'sezam', name: 'Sezamové chipsy' },
+            { id: 'kesu_p', name: 'Kešu pražené solené' },
+            { id: 'lan', name: 'Ľanový snack' },
+            { id: 'soja', name: 'Pražená sója' },
+            { id: 'mix', name: 'Slaný mix' },
+            { id: 'zeler', name: 'Zeleninové chipsy' },
+          ],
+          semienka: [
+            { id: 'slnecn', name: 'Slnečnica lúpaná' },
+            { id: 'tekvica', name: 'Tekvicové jadrá' },
+          ],
+          mrazom: [
+            { id: 'dracie', name: 'Dračie ovocie' },
+            { id: 'figy_m', name: 'Figy' },
+            { id: 'jahody_m', name: 'Jahody' },
+            { id: 'maliny_m', name: 'Maliny' },
+            { id: 'mango_m', name: 'Mango' },
+          ],
+        };
+
+        const lookupMap = {};
+        Object.values(CATALOG).forEach(cat => {
+          cat.forEach(item => {
+            lookupMap[item.id] = item.name;
+          });
+        });
+
+        ingredientsList = ids.map((id, idx) => ({
+          name: lookupMap[id] || id,
+          weight: weights[idx],
+        }));
       }
     } catch (e) {
-      console.log('Could not parse ingredients');
+      console.log('Could not parse ingredients', e);
     }
 
     // Debug logging
