@@ -74,12 +74,20 @@ async function generateInvoicePDF(session, lineItems, ingredientsList = []) {
   // Add ingredients if available
   if (ingredientsList.length > 0 && y > 200) {
     y -= 15;
-    page.drawText('Zlozenije kornuta:', { x: 50, y, size: smallFontSize, color: rgb(0.3, 0.3, 0.3) });
+
+    // Get balenie info
+    const CAPACITY_TIERS = [500, 1000, 1500];
+    const capacityTier = parseInt(session.metadata?.capacityTier) || 0;
+    const balenie = CAPACITY_TIERS[capacityTier] || 500;
+    const totalWeight = ingredientsList.reduce((sum, ing) => sum + (ing.weight || 0), 0);
+
+    page.drawText(`Zlozenije kornuta (Balenie: ${balenie}g, Naplnene: ${totalWeight}g):`, { x: 50, y, size: smallFontSize, color: rgb(0.3, 0.3, 0.3) });
     y -= 12;
 
-    ingredientsList.forEach(ing => {
+    ingredientsList.forEach((ing, idx) => {
       if (y < 100) return;
-      page.drawText('  - ' + removeDiacritics(ing.name), { x: 50, y, size: xSmall, color: rgb(0.4, 0.4, 0.4) });
+      const ingText = `${idx + 1}. ${removeDiacritics(ing.name)} - ${ing.weight}g`;
+      page.drawText(ingText, { x: 50, y, size: xSmall, color: rgb(0.4, 0.4, 0.4) });
       y -= 10;
     });
   }
@@ -291,17 +299,27 @@ export default async function handler(req, res) {
     // Generate PDF invoice
     const pdfBytes = await generateInvoicePDF(session, lineItems, ingredientsList);
 
+    // Get capacity tier info
+    const CAPACITY_TIERS = [500, 1000, 1500];
+    const capacityTier = parseInt(session.metadata.capacityTier) || 0;
+    const balenie = CAPACITY_TIERS[capacityTier] || 500;
+    const totalWeight = ingredientsList.reduce((sum, ing) => sum + (ing.weight || 0), 0);
+
     // Build ingredients HTML
     const ingredientsHTML = ingredientsList.length > 0 ? `
       <div style="margin: 20px 0; padding: 15px; background-color: #f5f5f5; border-radius: 8px;">
-        <h3>Zloženie vášho kornútu:</h3>
-        <ul style="list-style: none; padding: 0;">
-          ${ingredientsList.map(ing => `
-            <li style="padding: 8px 0; border-bottom: 1px solid #ddd;">
-              <strong>${removeDiacritics(ing.name)}</strong>
+        <h3>📦 Balenie: ${balenie}g (Naplnené: ${totalWeight}g)</h3>
+        <h3>🎯 Zloženie vášho kornútu (v poradí, ako ste si ho vytvorili):</h3>
+        <ol style="padding-left: 20px;">
+          ${ingredientsList.map((ing, idx) => `
+            <li style="padding: 6px 0; margin-bottom: 4px;">
+              <strong>${removeDiacritics(ing.name)}</strong> — <span style="color: #666;">${ing.weight}g</span>
             </li>
           `).join('')}
-        </ul>
+        </ol>
+        <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #ddd;">
+          <strong>Celková hmotnosť:</strong> ${totalWeight}g
+        </div>
       </div>
     ` : '';
 
@@ -350,18 +368,25 @@ export default async function handler(req, res) {
 
     // Build admin ingredients table
     const ingredientsTableHTML = ingredientsList.length > 0 ? `
+      <h3>📦 Balenie: ${balenie}g (Naplnené: ${totalWeight}g)</h3>
       <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
         <thead>
-          <tr style="background-color: #f0f0f0;">
-            <th style="border: 1px solid #ddd; padding: 10px; text-align: left;">Ingrediencia</th>
+          <tr style="background-color: #ff6b9d; color: white;">
+            <th style="border: 1px solid #ddd; padding: 10px; text-align: left; width: 70%;">Ingrediencia (poradie pridania)</th>
+            <th style="border: 1px solid #ddd; padding: 10px; text-align: right; width: 30%;">Hmotnosť (g)</th>
           </tr>
         </thead>
         <tbody>
-          ${ingredientsList.map(ing => `
-            <tr>
-              <td style="border: 1px solid #ddd; padding: 10px;">${removeDiacritics(ing.name)}</td>
+          ${ingredientsList.map((ing, idx) => `
+            <tr style="background-color: ${idx % 2 === 0 ? '#fff' : '#f9f9f9'};">
+              <td style="border: 1px solid #ddd; padding: 10px;">${idx + 1}. ${removeDiacritics(ing.name)}</td>
+              <td style="border: 1px solid #ddd; padding: 10px; text-align: right;"><strong>${ing.weight}g</strong></td>
             </tr>
           `).join('')}
+          <tr style="background-color: #f0f0f0; font-weight: bold;">
+            <td style="border: 1px solid #ddd; padding: 10px;">CELKOM:</td>
+            <td style="border: 1px solid #ddd; padding: 10px; text-align: right;">${totalWeight}g</td>
+          </tr>
         </tbody>
       </table>
     ` : '';
