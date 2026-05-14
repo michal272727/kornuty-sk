@@ -941,11 +941,15 @@ function OptionRow({ checked, onClick, title, sub, price }) {
 function SuccessScreen({ completedCones, deliveryMethod, orderInfo, onRestart, direction }) {
   const orderNum = useMemo(() => 'KOR-' + Math.floor(Math.random() * 90000 + 10000), []);
 
+  // Calculate subtotal with safety checks
   const subtotal = useMemo(() => {
+    if (!completedCones || completedCones.length === 0 || !window.ITEM_LOOKUP) return 0;
     return completedCones.reduce((sum, cone) => {
+      if (!cone.items) return sum;
       const ingredientsCost = cone.items.reduce((s, item) => {
-        if (typeof window === 'undefined') return s;
+        if (typeof window === 'undefined' || !window.ITEM_LOOKUP) return s;
         const itemData = window.ITEM_LOOKUP[item.id];
+        if (!itemData) return s;
         const weight = item.weights ? item.weights.reduce((a, b) => a + b, 0) : item.weight;
         return s + (itemData.price * weight / itemData.unit);
       }, 0);
@@ -957,7 +961,13 @@ function SuccessScreen({ completedCones, deliveryMethod, orderInfo, onRestart, d
   const shipping = deliveryMethod === 'pickup' ? 0 : (window.SHIPPING || 4.00);
   const total = subtotal + shipping;
 
-  const allItems = completedCones.flatMap(cone => cone.items.map(item => ({ ...window.ITEM_LOOKUP[item.id], weight: item.weights ? item.weights.reduce((a, b) => a + b, 0) : item.weight })));
+  const allItems = completedCones && completedCones.length > 0 ? completedCones.flatMap(cone =>
+    cone.items.map(item => {
+      const itemData = window.ITEM_LOOKUP?.[item.id];
+      const weight = item.weights ? item.weights.reduce((a, b) => a + b, 0) : item.weight;
+      return itemData ? { ...itemData, weight } : null;
+    }).filter(Boolean)
+  ) : [];
 
   return (
     <div className="screen success" data-screen-label="Success">
@@ -994,11 +1004,12 @@ function SuccessScreen({ completedCones, deliveryMethod, orderInfo, onRestart, d
                   Kornút #{coneIdx + 1}
                 </div>
                 <div style={{ fontSize: '12px', color: '#666', marginBottom: '8px' }}>
-                  Veľkosť: {window.CAPACITY_TIERS[cone.capacityTier]}g
+                  Veľkosť: {window.CAPACITY_TIERS?.[cone.capacityTier] || 'N/A'}g
                 </div>
                 {cone.items.map(item => {
-                  const itemData = window.ITEM_LOOKUP[item.id];
+                  const itemData = window.ITEM_LOOKUP?.[item.id];
                   const weight = item.weights ? item.weights.reduce((a, b) => a + b, 0) : item.weight;
+                  if (!itemData) return null;
                   return (
                     <div key={item.id} className="order-item">
                       <div className="order-item-name">{itemData.name}</div>
