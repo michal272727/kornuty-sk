@@ -6,18 +6,14 @@ export function NutritionModal({ isOpen, itemId, itemName, onClose }) {
   if (!isOpen || !itemId) return null;
 
   const nutritionData = typeof window !== 'undefined' ? window.NUTRITION_DATA?.[itemId] : null;
-  const nutritionImage = `/nutrition-info/${itemId}.jpeg`;
 
-  const hasData = nutritionData && (nutritionData.composition || nutritionData.values?.length > 0);
-
-  if (!hasData) {
+  if (!nutritionData) {
     return (
       <div className="nutrition-modal-overlay" onClick={onClose}>
-        <div className="nutrition-modal nutrition-modal-image-only" onClick={(e) => e.stopPropagation()}>
+        <div className="nutrition-modal" onClick={(e) => e.stopPropagation()}>
           <button className="nutrition-modal-close" onClick={onClose}>✕</button>
           <div className="nutrition-modal-content">
-            <h2 className="nutrition-modal-title">{itemName}</h2>
-            <img src={nutritionImage} alt={itemName} className="nutrition-full-image" />
+            <p>Tieto informácie nie sú dostupné.</p>
           </div>
         </div>
       </div>
@@ -52,10 +48,12 @@ export function NutritionModal({ isOpen, itemId, itemName, onClose }) {
               <table className="nutrition-table">
                 <tbody>
                   {nutritionData.values.map((row, idx) => (
-                    <tr key={idx}>
-                      <td className="nutrition-label">{row.label}</td>
-                      <td className="nutrition-value">{row.value}</td>
-                    </tr>
+                    row.value && (
+                      <tr key={idx}>
+                        <td className="nutrition-label">{row.label}</td>
+                        <td className="nutrition-value">{row.value}</td>
+                      </tr>
+                    )
                   ))}
                 </tbody>
               </table>

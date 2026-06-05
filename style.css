@@ -604,7 +604,7 @@ input, textarea { font: inherit; color: inherit; }
 .item-card:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
 .item-card.in-cart {
   border-color: var(--accent-ink);
-  background: linear-gradient(180deg, var(--paper), color-mix(in oklab, var(--peach) 30%, var(--paper)));
+  background: var(--paper);
 }
 .item-card.pulse { animation: pulse 0.5s ease; }
 .item-card.flash { box-shadow: 0 0 0 2px var(--accent-ink); }

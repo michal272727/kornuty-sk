@@ -1,6 +1,7 @@
 import '../style.css';
 import '../data.js';
 import '../nutrition-data.js';
+import '../nutrition-image-mapping.js';
 import '../tweaks-panel.jsx';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
