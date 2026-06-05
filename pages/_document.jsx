@@ -4,6 +4,8 @@ export default function Document() {
   return (
     <Html lang="sk">
       <Head>
+        <title>Kornuty.sk - Vytvor si svoj vlastný kornút</title>
+
         {/* Favicon */}
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
