@@ -622,7 +622,7 @@ input, textarea { font: inherit; color: inherit; }
   position: relative;
   overflow: hidden;
 }
-.item-illus > div {
+.item-illus > div:not(.item-badge) {
   width: 80%;
   height: 80%;
 }
