@@ -596,8 +596,14 @@ function BuilderScreen({
           <div className="sticky-info">
             <div className="sticky-count">{currentCart.length} ingrediencií · {totalWeight}g</div>
             <div className="sticky-price">{subtotal.toFixed(2)} €</div>
+            {totalWeight < 500 && <div style={{ fontSize: '12px', color: '#E8623D', marginTop: '4px' }}>Min. 500g (chýba {500 - totalWeight}g)</div>}
           </div>
-          <button className="btn-primary" onClick={onAddToCones}>
+          <button
+            className="btn-primary"
+            onClick={onAddToCones}
+            disabled={totalWeight < 500}
+            title={totalWeight < 500 ? `Kornut musi mat minimalne 500g (${totalWeight}g / 500g)` : ''}
+          >
             Pokračovať <ArrowIcon />
           </button>
         </div>
