@@ -1,0 +1,19 @@
+# Robots.txt for Kornuty.sk
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /.next/
+Disallow: /private/
+
+# Allow specific crawlers
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Sitemap
+Sitemap: https://new.kornuty.sk/sitemap.xml
+
+# Crawl delay (in seconds)
+Crawl-delay: 1
