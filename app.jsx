@@ -148,7 +148,7 @@ function App() {
 
   const addConeToCart = () => {
     if (currentCart.length === 0) return;
-    setCompletedCones(prev => [...prev, { items: currentCart, capacityTier: currentCapacityTier }]);
+    setCompletedCones(prev => [...prev, { items: currentCart, capacityTier: currentCapacityTier, quantity: 1 }]);
     setCurrentCart([]);
     setCurrentCapacityTier(0);
   };
@@ -674,8 +674,11 @@ function CartScreen({ completedCones, setCompletedCones, onBack, onAddAnother, o
       return s + (itemData.price * weight / itemData.unit);
     }, 0);
     const baseCost = window.BASE_CONE_PRICE || 0;
-    return sum + baseCost + ingredientsCost;
+    const conePrice = (baseCost + ingredientsCost) * (cone.quantity || 1);
+    return sum + conePrice;
   }, 0);
+
+  const totalQuantity = completedCones.reduce((sum, cone) => sum + (cone.quantity || 1), 0);
 
   const totalShipping = window.SHIPPING || 0;
 
@@ -697,18 +700,31 @@ function CartScreen({ completedCones, setCompletedCones, onBack, onAddAnother, o
 
           return (
             <div key={idx} className="cone-group" style={{ marginBottom: '20px', paddingBottom: '20px', borderBottom: '1px solid #ddd' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px', gap: '12px' }}>
                 <div>
                   <h4 style={{ margin: 0 }}>Kornút #{idx + 1}</h4>
                   <div style={{ fontSize: '12px', color: '#666', marginTop: '2px' }}>
                     Veľkosť: {window.CAPACITY_TIERS[cone.capacityTier]}g
                   </div>
                 </div>
-                <button
-                  onClick={() => setCompletedCones(prev => prev.filter((_, i) => i !== idx))}
-                  style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '18px', padding: '4px 8px' }}
-                  title="Odstrániť"
-                >🗑️</button>
+                <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexShrink: 0 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: '#f5f5f5', padding: '4px 8px', borderRadius: '6px' }}>
+                    <button
+                      onClick={() => setCompletedCones(prev => prev.map((c, i) => i === idx ? { ...c, quantity: Math.max(1, (c.quantity || 1) - 1) } : c))}
+                      style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '14px', padding: '0 4px', color: '#666' }}
+                    >−</button>
+                    <span style={{ minWidth: '20px', textAlign: 'center', fontSize: '13px', fontWeight: 600 }}>{cone.quantity || 1}</span>
+                    <button
+                      onClick={() => setCompletedCones(prev => prev.map((c, i) => i === idx ? { ...c, quantity: (c.quantity || 1) + 1 } : c))}
+                      style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '14px', padding: '0 4px', color: '#666' }}
+                    >+</button>
+                  </div>
+                  <button
+                    onClick={() => setCompletedCones(prev => prev.filter((_, i) => i !== idx))}
+                    style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '18px', padding: '4px 8px' }}
+                    title="Odstrániť"
+                  >🗑️</button>
+                </div>
               </div>
 
               <div style={{ display: 'flex', gap: '12px', marginBottom: '12px' }}>
@@ -722,8 +738,15 @@ function CartScreen({ completedCones, setCompletedCones, onBack, onAddAnother, o
                       <span style={{ color: '#666' }}>{it.weight}g</span>
                     </div>
                   ))}
-                  <div style={{ marginTop: '8px', paddingTop: '8px', borderTop: '1px solid #eee', fontWeight: 'bold', fontSize: '14px' }}>
-                    {conPrice.toFixed(2)} €
+                  <div style={{ marginTop: '8px', paddingTop: '8px', borderTop: '1px solid #eee', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div>
+                      <div style={{ fontSize: '12px', color: '#666', marginBottom: '2px' }}>
+                        {conPrice.toFixed(2)} € × {cone.quantity || 1}
+                      </div>
+                      <div style={{ fontWeight: 'bold', fontSize: '14px' }}>
+                        {(conPrice * (cone.quantity || 1)).toFixed(2)} €
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -735,7 +758,7 @@ function CartScreen({ completedCones, setCompletedCones, onBack, onAddAnother, o
       <div className="summary">
         <div className="summary-row">
           <span>Počet kornútov</span>
-          <span>{completedCones.length}×</span>
+          <span>{totalQuantity}× ({completedCones.length} typ{completedCones.length === 1 ? '' : 'ov'})</span>
         </div>
         <div className="summary-row">
           <span>Cena</span>
@@ -777,7 +800,8 @@ function CheckoutScreen({ completedCones, orderInfo, setOrderInfo, deliveryMetho
         return s + (itemData.price * weight / itemData.unit);
       }, 0);
       const baseCost = window.BASE_CONE_PRICE || 0;
-      return sum + baseCost + ingredientsCost;
+      const conePrice = (baseCost + ingredientsCost) * (cone.quantity || 1);
+      return sum + conePrice;
     }, 0);
   }, [completedCones]);
 
@@ -888,11 +912,12 @@ function CheckoutScreen({ completedCones, orderInfo, setOrderInfo, deliveryMetho
               const weight = item.weights ? item.weights.reduce((a, b) => a + b, 0) : item.weight;
               return s + (itemData.price * weight / itemData.unit);
             }, 0) + (window.BASE_CONE_PRICE || 0);
+            const quantity = cone.quantity || 1;
             return (
               <div key={idx} style={{ marginBottom: '12px', paddingBottom: '12px', borderBottom: '1px solid #eee' }}>
-                <div style={{ fontWeight: 'bold' }}>Kornút #{idx + 1} — {window.CAPACITY_TIERS[cone.capacityTier]}g</div>
+                <div style={{ fontWeight: 'bold' }}>Kornút #{idx + 1} — {window.CAPACITY_TIERS[cone.capacityTier]}g × {quantity}</div>
                 <div style={{ color: '#666', fontSize: '13px', marginTop: '4px' }}>
-                  {cone.items.length} ingrediencií · {conePrice.toFixed(2)} €
+                  {cone.items.length} ingrediencií · {conePrice.toFixed(2)} € = {(conePrice * quantity).toFixed(2)} €
                 </div>
               </div>
             );
@@ -902,7 +927,7 @@ function CheckoutScreen({ completedCones, orderInfo, setOrderInfo, deliveryMetho
 
       <div className="summary">
         <div className="summary-row">
-          <span>Kornúty ({completedCones.length}×)</span>
+          <span>Kornúty ({completedCones.reduce((sum, c) => sum + (c.quantity || 1), 0)}×)</span>
           <span>{subtotal.toFixed(2)} €</span>
         </div>
         <div className="summary-row">
@@ -987,7 +1012,8 @@ function SuccessScreen({ completedCones, deliveryMethod, orderInfo, onRestart, d
         return s + (itemData.price * weight / itemData.unit);
       }, 0);
       const baseCost = window.BASE_CONE_PRICE || 0;
-      return sum + baseCost + ingredientsCost;
+      const conePrice = (baseCost + ingredientsCost) * (cone.quantity || 1);
+      return sum + conePrice;
     }, 0);
   }, [completedCones]);
 
@@ -1034,7 +1060,7 @@ function SuccessScreen({ completedCones, deliveryMethod, orderInfo, onRestart, d
             {completedCones.map((cone, coneIdx) => (
               <div key={coneIdx}>
                 <div style={{ fontWeight: 'bold', fontSize: '14px', marginTop: coneIdx > 0 ? '12px' : 0, marginBottom: '4px' }}>
-                  Kornút #{coneIdx + 1}
+                  Kornút #{coneIdx + 1} × {cone.quantity || 1}
                 </div>
                 <div style={{ fontSize: '12px', color: '#666', marginBottom: '8px' }}>
                   Veľkosť: {window.CAPACITY_TIERS?.[cone.capacityTier] || 'N/A'}g
