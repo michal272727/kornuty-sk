@@ -7,6 +7,7 @@ import {
   TweakText, TweakNumber, TweakColor, TweakButton,
 } from './tweaks-panel';
 import { ConeViz } from './cone-viz';
+import { NutritionModal } from './nutrition-modal';
 
 // Main Kornuty.sk app — interactive prototype
 // Mobile-first, multi-screen flow: Welcome → Builder → Cart → Checkout → Done
@@ -86,6 +87,7 @@ function App() {
   const [orderInfo, setOrderInfo] = useState(LS.get('orderInfo', { name: '', email: '', phone: '', address: '', city: '', zip: '' }));
   const [coneCount, setConeCount] = useState(1);
   const [showFullCelebration, setShowFullCelebration] = useState(false);
+  const [nutritionModal, setNutritionModal] = useState({ isOpen: false, itemId: null, itemName: null });
 
   useEffect(() => LS.set('screen', screen), [screen]);
   useEffect(() => LS.set('currentCart', currentCart), [currentCart]);
@@ -316,6 +318,7 @@ function App() {
             onAddToCones={() => { addConeToCart(); setScreen('cart'); }}
             onViewCart={completedCones.length > 0 ? () => setScreen('cart') : null}
             direction={direction}
+            setNutritionModal={setNutritionModal}
           />
         )}
         {hydrated && screen === 'cart' && (
@@ -350,6 +353,13 @@ function App() {
           />
         )}
       </div>
+
+      <NutritionModal
+        isOpen={nutritionModal.isOpen}
+        itemId={nutritionModal.itemId}
+        itemName={nutritionModal.itemName}
+        onClose={() => setNutritionModal({ isOpen: false, itemId: null, itemName: null })}
+      />
     </div>
   );
 }
@@ -423,7 +433,7 @@ function BuilderScreen({
   currentCapacityTier, capacity, fillPct, isFull, canUpgrade, nextCapacity, upgradeCapacity, showFullCelebration,
   activeCategory, setActiveCategory, isCategoryLocked, hasMrazom,
   addItem, removeItem, updateWeight, recentlyAdded, animatingId, lastAddedId,
-  onBack, onAddToCones, onViewCart, direction,
+  onBack, onAddToCones, onViewCart, direction, setNutritionModal,
 }) {
   const cat = window.CATALOG[activeCategory];
   const [search, setSearch] = useState('');
@@ -574,6 +584,7 @@ function BuilderScreen({
               onUpdate={(w) => updateWeight(item.id, w)}
               animating={animatingId === item.id}
               recent={recentlyAdded === item.id}
+              onNutrition={(id, name) => setNutritionModal({ isOpen: true, itemId: id, itemName: name })}
             />
           );
         })}
@@ -595,7 +606,7 @@ function BuilderScreen({
   );
 }
 
-function ItemCard({ item, unit, inCart, weight, onAdd, onRemove, onUpdate, animating, recent }) {
+function ItemCard({ item, unit, inCart, weight, onAdd, onRemove, onUpdate, animating, recent, onNutrition }) {
   const step = unit === 10 ? 10 : 20;
   return (
     <div className={`item-card ${inCart ? 'in-cart' : ''} ${animating ? 'pulse' : ''} ${recent ? 'flash' : ''}`}>
@@ -608,7 +619,12 @@ function ItemCard({ item, unit, inCart, weight, onAdd, onRemove, onUpdate, anima
         {inCart && <div className="item-badge">{weight}g</div>}
       </div>
       <div className="item-info">
-        <div className="item-name">{item.name}</div>
+        <div className="item-name-row">
+          <div className="item-name">{item.name}</div>
+          {item.hasNutrition && (
+            <button className="item-nutrition-btn" onClick={() => onNutrition(item.id, item.name)} title="Výživové údaje">📋</button>
+          )}
+        </div>
         <div className="item-price">{item.price.toFixed(2)} € / {unit}g</div>
       </div>
       {!inCart ? (

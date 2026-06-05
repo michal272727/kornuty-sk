@@ -1081,3 +1081,172 @@ input, textarea { font: inherit; color: inherit; }
 .dir-modernist .sticky-count { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.02em; }
 .dir-modernist .sticky-price,
 .dir-modernist .summary-row.total span:last-child { font-family: 'IBM Plex Mono', monospace; }
+
+/* ============ NUTRITION MODAL ============ */
+
+.item-name-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.item-nutrition-btn {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 2px;
+  flex-shrink: 0;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.item-nutrition-btn:hover {
+  opacity: 1;
+}
+
+.nutrition-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+  backdrop-filter: blur(2px);
+}
+
+.nutrition-modal {
+  background: white;
+  border-radius: 16px;
+  max-width: 500px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.nutrition-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--ink-mute);
+  padding: 4px;
+  z-index: 10;
+  transition: color 0.2s;
+}
+
+.nutrition-modal-close:hover {
+  color: var(--ink);
+}
+
+.nutrition-modal-content {
+  padding: 24px;
+}
+
+.nutrition-modal-title {
+  margin: 0 0 20px 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.nutrition-section {
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--line);
+}
+
+.nutrition-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.nutrition-section h3 {
+  margin: 0 0 10px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-mute);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.nutrition-section p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+.nutrition-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.nutrition-table tr {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.nutrition-table tr:last-child {
+  border-bottom: none;
+}
+
+.nutrition-label {
+  color: var(--ink-mute);
+  font-weight: 500;
+  text-align: left;
+}
+
+.nutrition-value {
+  color: var(--ink);
+  font-weight: 600;
+  text-align: right;
+  margin-left: 16px;
+}
+
+.nutrition-storage {
+  background: color-mix(in oklab, var(--accent) 8%, transparent);
+  padding: 12px;
+  border-radius: 8px;
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 12px;
+}
+
+.nutrition-modal-image-only {
+  max-width: 600px;
+}
+
+.nutrition-full-image {
+  width: 100%;
+  max-height: 70vh;
+  object-fit: contain;
+  border-radius: 8px;
+}

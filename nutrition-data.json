@@ -1,0 +1,725 @@
+{
+  "kesu": {
+    "composition": "Kešu orechy jadlá prírodné",
+    "origin": "Západná Afrika",
+    "storage": "V suchu, chráňte pred priamym slnečným žiarením",
+    "values": [
+      {"label": "Energia", "value": "2402 kJ / 574 kcal"},
+      {"label": "Tuky", "value": "46,35 g"},
+      {"label": "z toho nasýtené mastné kyseliny", "value": "9,2 g"},
+      {"label": "Sacharidy", "value": "32,7 g"},
+      {"label": "z toho cukry", "value": "5,01 g"},
+      {"label": "Vláknina", "value": "3,2 g"},
+      {"label": "Bielkoviny", "value": "15,31 g"},
+      {"label": "Soľ", "value": "0 g"}
+    ]
+  },
+  "mandle": {
+    "composition": "Mandle jadrá prírodné",
+    "origin": "Španielsko",
+    "storage": "V suchu, tme a chráňte pred priamym slnečným žiarením",
+    "values": [
+      {"label": "Energia", "value": "2694 kJ / 644 kcal"},
+      {"label": "Tuky", "value": "58,71 g"},
+      {"label": "z toho nasýtené mastné kyseliny", "value": "10,61 g"},
+      {"label": "Sacharidy", "value": "2,5 g"},
+      {"label": "z toho cukry", "value": "2,2 g"},
+      {"label": "Vláknina", "value": "12,07 g"},
+      {"label": "Bielkoviny", "value": "20,49 g"},
+      {"label": "Soľ", "value": "0,01 g"}
+    ]
+  },
+  "mandle_blanzirovane": {
+    "composition": "Mandle jadrá lúpané",
+    "origin": "Španielsko",
+    "storage": "V chlade, suchú, tme a chráňte pred priamym slnečným žiarením",
+    "values": [
+      {"label": "Energia", "value": "2694 kJ / 644 kcal"},
+      {"label": "Tuky", "value": "58,71 g"},
+      {"label": "z toho nasýtené mastné kyseliny", "value": "10,61 g"},
+      {"label": "Sacharidy", "value": "2,5 g"},
+      {"label": "z toho cukry", "value": "2,2 g"},
+      {"label": "Vláknina", "value": "12,07 g"},
+      {"label": "Bielkoviny", "value": "20,49 g"},
+      {"label": "Soľ", "value": "0,01 g"}
+    ]
+  },
+  "arasidy": {
+    "composition": "Pražené lúpané arašídy nesolené 98%, slnečnicový olej 2%",
+    "origin": "Argentína",
+    "storage": "V suchu, tme a chráňte pred priamym slnečným žiarením",
+    "values": [
+      {"label": "Energia", "value": "2498 kJ / 599 kcal"},
+      {"label": "Tuky", "value": "52,5 g"},
+      {"label": "z toho nasýtené mastné kyseliny", "value": "6,5 g"},
+      {"label": "Sacharidy", "value": "15,3 g"},
+      {"label": "z toho cukry", "value": "4,2 g"},
+      {"label": "Bielkoviny", "value": "28 g"},
+      {"label": "Soľ", "value": "0 g"}
+    ]
+  },
+  "lieskove": {
+    "composition": "Lieskovce orechy jadrá prírodné",
+    "origin": "Azerbaidžan",
+    "storage": "V suchu pri teplote do 22°C a vlhkosti vzduchu do 70%. Chráňte pred priamym slnečným žiarením",
+    "values": [
+      {"label": "Energia", "value": "2630 kJ / 628 kcal"},
+      {"label": "Tuky", "value": "60,75 g"},
+      {"label": "z toho nasýtené mastné kyseliny", "value": "4,9 g"},
+      {"label": "Sacharidy", "value": "16,7 g"},
+      {"label": "z toho cukry", "value": "4,34 g"},
+      {"label": "Vláknina", "value": "9,7 g"},
+      {"label": "Bielkoviny", "value": "14,95 g"},
+      {"label": "Soľ", "value": "0 g"}
+    ]
+  },
+  "makadam": {
+    "composition": "Makadámové orechy jadrá nepražené",
+    "origin": "Južná Afrika",
+    "storage": "Pri teplote do 22°C a vlhkosti vzduchu do 70%. Chráňte pred priamym slnečným žiarením",
+    "values": [
+      {"label": "Energia", "value": "3004 kJ / 718 kcal"},
+      {"label": "Tuky", "value": "70,7 g"},
+      {"label": "z toho nasýtené mastné kyseliny", "value": "9,9 g"},
+      {"label": "Sacharidy", "value": "12,6 g"},
+      {"label": "z toho cukry", "value": "4,6 g"},
+      {"label": "Vláknina", "value": "8 g"},
+      {"label": "Bielkoviny", "value": "7,8 g"},
+      {"label": "Soľ", "value": "0 g"}
+    ]
+  },
+  "pekan": {
+    "composition": "Pekanové orechy jadrá nepražené",
+    "origin": "USA",
+    "storage": "Pri teplote do 22°C a vlhkosti vzduchu do 70%. Chráňte pred priamym slnečným žiarením",
+    "values": [
+      {"label": "Energia", "value": "2970 kJ / 721 kcal"},
+      {"label": "Tuky", "value": "72 g"},
+      {"label": "z toho nasýtené mastné kyseliny", "value": "6,2 g"},
+      {"label": "Sacharidy", "value": "14,3 g"},
+      {"label": "z toho cukry", "value": "4 g"},
+      {"label": "Vláknina", "value": "9,6 g"},
+      {"label": "Bielkoviny", "value": "9,2 g"},
+      {"label": "Soľ", "value": "0 g"}
+    ]
+  },
+  "pinia": {
+    "composition": "Piniové oriešky jadrá",
+    "origin": "Rusko",
+    "storage": "Pri teplote do 22°C a vlhkosti vzduchu do 70%. Chráňte pred priamym slnečným žiarením",
+    "values": [
+      {"label": "Energia", "value": "2816 kJ / 673 kcal"},
+      {"label": "Tuky", "value": "68,4 g"},
+      {"label": "z toho nasýtené mastné kyseliny", "value": "4,9 g"},
+      {"label": "Sacharidy", "value": "13,1 g"},
+      {"label": "z toho cukry", "value": "3,6 g"},
+      {"label": "Vláknina", "value": "3,7 g"},
+      {"label": "Bielkoviny", "value": "13,7 g"},
+      {"label": "Soľ", "value": "0 g"}
+    ]
+  },
+  "pistacie": {
+    "composition": "Pistácie pražené nelúpané, soľ",
+    "origin": "USA",
+    "storage": "Pri teplote do 22°C a vlhkosti vzduchu do 70%. Chráňte pred priamym slnečným žiarením",
+    "values": [
+      {"label": "Energia", "value": "2352 kJ / 562 kcal"},
+      {"label": "Tuky", "value": "45,3 g"},
+      {"label": "z toho nasýtené mastné kyseliny", "value": "5,6 g"},
+      {"label": "Sacharidy", "value": "27 g"},
+      {"label": "z toho cukry", "value": "7,8 g"},
+      {"label": "Bielkoviny", "value": "20,3 g"},
+      {"label": "Soľ", "value": "1,4 g"}
+    ]
+  },
+  "vlasske_orechy": {
+    "composition": "Vlašské orechy jadrá",
+    "origin": "Ukrajina",
+    "storage": "V suchu, chráňte pred tepelom a priamym slnečným žiarením",
+    "values": [
+      {"label": "Energia", "value": "2830 kJ / 686 kcal"},
+      {"label": "Tuky", "value": "66 g"},
+      {"label": "z toho nasýtené mastné kyseliny", "value": "5,9 g"},
+      {"label": "Sacharidy", "value": "4,4 g"},
+      {"label": "z toho cukry", "value": "3,8 g"},
+      {"label": "Vláknina", "value": "6,5 g"},
+      {"label": "Bielkoviny", "value": "17 g"},
+      {"label": "Soľ", "value": "0,08 g"}
+    ]
+  },
+  "slnecnica_semienka": {
+    "composition": "Lúpaná slnečnica 100%",
+    "origin": "Česká republika",
+    "storage": "V suchu a tme",
+    "values": [
+      {"label": "Energia", "value": "2450 kJ / 584 kcal"},
+      {"label": "Tuky", "value": "51,5 g"},
+      {"label": "z toho nasýtené mastné kyseliny", "value": "4,5 g"},
+      {"label": "Sacharidy", "value": "20 g"},
+      {"label": "z toho cukry", "value": "2,6 g"},
+      {"label": "Vláknina", "value": "8,6 g"},
+      {"label": "Bielkoviny", "value": "20,8 g"},
+      {"label": "Soľ", "value": "0 g"}
+    ]
+  },
+  "tekvicove_semienka": {
+    "composition": "Tekvicové semienka lúpané 100%",
+    "origin": "Česká republika",
+    "storage": "V suchu a tme",
+    "values": [
+      {"label": "Energia", "value": "2340 kJ / 559 kcal"},
+      {"label": "Tuky", "value": "49,1 g"},
+      {"label": "z toho nasýtené mastné kyseliny", "value": "8,7 g"},
+      {"label": "Sacharidy", "value": "10,7 g"},
+      {"label": "z toho cukry", "value": "1,4 g"},
+      {"label": "Vláknina", "value": "6 g"},
+      {"label": "Bielkoviny", "value": "30,2 g"},
+      {"label": "Soľ", "value": "0 g"}
+    ]
+  },
+  "hrachova_muka_cervena": {
+    "composition": "Hrachová múka, slnečnicový olej, sušená červená repa 7,5%, sušené zemiaky, himalájska soľ",
+    "origin": "Česká republika",
+    "storage": "V suchu a tme",
+    "values": [
+      {"label": "Energia", "value": "1768 kJ / 422 kcal"},
+      {"label": "Tuky", "value": "22,0 g"},
+      {"label": "z toho nasýtené mastné kyseliny", "value": "2,06 g"},
+      {"label": "Sacharidy", "value": "40,9 g"},
+      {"label": "z toho cukry", "value": "11,7 g"},
+      {"label": "Bielkoviny", "value": "16,5 g"},
+      {"label": "Soľ", "value": "2,2 g"},
+      {"label": "Vláknina", "value": "11,6 g"}
+    ]
+  },
+  "hrachova_muka_chia": {
+    "composition": "Hrachová múka, slnečnicový olej, sušené zemiaky, chia semienka 5,4%, himalájska soľ, rozmarén 1%",
+    "origin": "Česká republika",
+    "storage": "V suchu a tme",
+    "values": [
+      {"label": "Energia", "value": "1641 kJ / 392 kcal"},
+      {"label": "Tuky", "value": "19,2 g"},
+      {"label": "z toho nasýtené mastné kyseliny", "value": "1,85 g"},
+      {"label": "Sacharidy", "value": "38,3 g"},
+      {"label": "z toho cukry", "value": "7,8 g"},
+      {"label": "Bielkoviny", "value": "17,2 g"},
+      {"label": "Soľ", "value": "2,34 g"},
+      {"label": "Vláknina", "value": "13,4 g"}
+    ]
+  },
+  "hrachova_muka_chia2": {
+    "composition": "Pšeničná múka T 850, pšeničná múka T 500, slnečnicový olej, celozrnná ovsená múka 4%, kukuričný krupica, celozrnná pšeničná múka 2,8%, soľ, lanové semienka, kypriaci prostriedok",
+    "origin": "Srbsko",
+    "storage": "V suchu, mimo priameho slnečného žiarenia a produktkov so silným zápachom",
+    "values": [
+      {"label": "Energia", "value": "2526 kJ / 607 kcal"},
+      {"label": "Tuky", "value": "42,6 g"},
+      {"label": "z toho nasýtené mastné kyseliny", "value": "9,8 g"},
+      {"label": "Sacharidy", "value": "48,9 g"},
+      {"label": "z toho cukry", "value": "1,1 g"},
+      {"label": "Bielkoviny", "value": "6,8 g"},
+      {"label": "Vláknina", "value": "4,3 g"},
+      {"label": "Soľ", "value": "2,7 g"}
+    ]
+  },
+  "hrachova_muka_sezam": {
+    "composition": "Hrachová múka, sezam 8%, slnečnicový olej, himalájska soľ",
+    "origin": "Česká republika",
+    "storage": "V suchu a tme",
+    "values": [
+      {"label": "Energia", "value": "1696 kJ / 405 kcal"},
+      {"label": "Tuky", "value": "20,7 g"},
+      {"label": "z toho nasýtené mastné kyseliny", "value": "2,2 g"},
+      {"label": "Sacharidy", "value": "37,6 g"},
+      {"label": "z toho cukry", "value": "2,4 g"},
+      {"label": "Bielkoviny", "value": "18,3 g"},
+      {"label": "Soľ", "value": "2,1 g"},
+      {"label": "Vláknina", "value": "13,0 g"}
+    ]
+  },
+  "pizza_smes": {
+    "composition": "Zelená redkovka 18%, mrkva 17%, slnečnicový olej 15%, batáty 12%, tekvica 10%, červená repa 8%, fialové zemiaky 7%, taro 5%, sladový cukor 4%, zelené fazulky 1%, soľ 1%",
+    "origin": "Čína",
+    "storage": "V suchu a tme. Chráňte pred priamym slnečným žiarením",
+    "values": [
+      {"label": "Energia", "value": "2175 kJ/520 kcal"},
+      {"label": "Tuky", "value": "30,5 g"},
+      {"label": "z toho nasýtené mastné kyseliny", "value": "3,3 g"},
+      {"label": "Sacharidy", "value": "54,5 g"},
+      {"label": "z toho cukry", "value": "35,5 g"},
+      {"label": "Vláknina", "value": "8,6 g"},
+      {"label": "Bielkoviny", "value": "2,8 g"},
+      {"label": "Soľ", "value": "0,54 g"}
+    ]
+  },
+  "arasidy_pizza_blend": {
+    "composition": "Arašídy lúpané pražené 27,5%, pšeničná múka 22,1%, cukor 20,1%, kukuričný škrob 16,63%, kukuričná múka 7,13%, kokosový olej 4,6%, soľ 0,66%, sójová omáčka v prášku 0,63%, korenie (horiaca prichút, repkový olej, dusil, cesnakový prášok, syrový prášok, čierne korenie, farbivo paprikový extrakt), slnečnicový olej, kypriacich prostriedok",
+    "origin": "Čína",
+    "storage": "V suchu a tme",
+    "values": [
+      {"label": "Energia", "value": "1921 kJ / 458 kcal"},
+      {"label": "Tuky", "value": "19,3 g"},
+      {"label": "z toho nasýtené mastné kyseliny", "value": "6,2 g"},
+      {"label": "Sacharidy", "value": "59,6 g"},
+      {"label": "z toho cukry", "value": "23,4 g"},
+      {"label": "Vláknina", "value": "2,8 g"},
+      {"label": "Bielkoviny", "value": "10 g"},
+      {"label": "Soľ", "value": "1,006 g"}
+    ]
+  },
+  "kesu_pizza_blend": {
+    "composition": "KEŠU NA SUCHO PRAŽENÉ SOLENÉ (kešu orechy pražené 98,5%, soľ 1%, emulgátor arabská guma); ARAŠÍDY PIZZA (arašídy lúpané pražené 75%, pšeničná múka, zemiakový škrob, pizza korenie 3%); MANDLE UDENÉ (mandle 90,9%, slnečnicový olej, udený prášok 3,6%); Ostatné zmesi obsahujúce jednotlivé zložky",
+    "origin": "Česká republika",
+    "storage": "V suchu, mimo priameho slnečného žiarenia",
+    "values": [
+      {"label": "Energia", "value": "2339 kJ / 581 kcal"},
+      {"label": "Tuky", "value": "40,5 g"},
+      {"label": "z toho nasýtené mastné kyseliny", "value": "5,93 g"},
+      {"label": "Sacharidy", "value": "31,68 g"},
+      {"label": "z toho cukry", "value": "9,25 g"},
+      {"label": "Bielkoviny", "value": "16,58 g"},
+      {"label": "Vláknina", "value": "2,83 g"},
+      {"label": "Soľ", "value": "1,43 g"}
+    ]
+  },
+  "para": {
+    "composition": "Para orechy jadrá",
+    "origin": "Bolívia",
+    "storage": "Pri teplote do 22°C a vlhkosti vzduchu do 70%. Chráňte pred priamym slnečným žiarením",
+    "values": [
+      {"label": "Energia", "value": "2743 kJ / 656 kcal"},
+      {"label": "Tuky", "value": "66,4 g"},
+      {"label": "z toho nasýtené mastné kyseliny", "value": "15,1 g"},
+      {"label": "Sacharidy", "value": "12,3 g"},
+      {"label": "z toho cukry", "value": "2,3 g"},
+      {"label": "Vláknina", "value": "7,5 g"},
+      {"label": "Bielkoviny", "value": "14,3 g"},
+      {"label": "Soľ", "value": "0 g"}
+    ]
+  },
+  "ananas_html": {
+    "composition": "Kandizovaný ananas 53%, cukor, kyselina citrónová, identic. prirodné arómy, voda, konzervačná látka disiricitán sodný",
+    "origin": "Thajsko",
+    "storage": "Chráňte pred účinkami slnka a mrazu. Skladujte v chlade",
+    "values": [
+      {"label": "Energia", "value": "1540 kJ / 364 kcal"},
+      {"label": "Tuky", "value": "0,8 g"},
+      {"label": "z toho nasýtené mastné kyseliny", "value": "0,5 g"},
+      {"label": "Sacharidy", "value": "88 g"},
+      {"label": "z toho cukry", "value": "82 g"},
+      {"label": "Vláknina", "value": "2,9 g"},
+      {"label": "Bielkoviny", "value": "0,5 g"},
+      {"label": "Soľ", "value": "0,06 g"}
+    ]
+  },
+  "ananas_kandizovany": {
+    "composition": "Kandizovaný ananas 51%, cukor, kyselina citrónová, identic. prirodné arómy, voda, konzervačná látka disiricitán sodný",
+    "origin": "Thajsko",
+    "storage": "Chráňte pred účinkami slnka a mrazu. Skladujte v chlade",
+    "values": [
+      {"label": "Energia", "value": "~1540 kJ / ~364 kcal (odhadovaná hodnota)"},
+      {"label": "Poznámka", "value": "Presné údaje nie sú dostatočne čitateľné z obrázka"}
+    ]
+  },
+  "ananas_kandizovany_variant": {
+    "composition": "Moru je 100% merunkový popis meruňky",
+    "origin": "Thajsko",
+    "storage": "Skladujte v suchu pri teplote do 70% vlhkosti vzduchu",
+    "values": [
+      {"label": "Energia", "value": "Nedostupné"}
+    ]
+  },
+  "banan_chips": {
+    "composition": "Banán (55%), rastlinný olej kokosový, cukor, prirodná banánová aróma",
+    "origin": "Filipíny",
+    "storage": "V suchu. Chráňte pred teplom a priamym slnečným žiarením",
+    "values": [
+      {"label": "Energia", "value": "2150 kJ / 516 kcal"},
+      {"label": "Tuky", "value": "30 g"},
+      {"label": "z toho nasýtené mastné kyseliny", "value": "5,6 g"},
+      {"label": "Sacharidy", "value": "58 g"},
+      {"label": "z toho cukry", "value": "19 g"},
+      {"label": "Vláknina", "value": "5,1 g"},
+      {"label": "Bielkoviny", "value": "1,9 g"},
+      {"label": "Soľ", "value": "0,17 g"}
+    ]
+  },
+  "brusnica_susena": {
+    "composition": "Sušená brusnica obyčajná, triedený cukor, slnečnicový olej, antioxidant kyselina citronová, dusená plynom",
+    "origin": "USA",
+    "storage": "Skladujte v suchu. Chráňte pred teplom a priamym slnečným žiarením",
+    "values": [
+      {"label": "Energia", "value": "1395 kJ/333 kcal"},
+      {"label": "Tuky", "value": "0,7 g"},
+      {"label": "z toho nasýtené mastné kyseliny", "value": "0,15 g"},
+      {"label": "Sacharidy", "value": "80,5 g"},
+      {"label": "z toho cukry", "value": "67,2 g"},
+      {"label": "Bielkoviny", "value": "1,25 g"},
+      {"label": "Soľ", "value": "0 g"}
+    ]
+  },
+  "cerne_susene": {
+    "composition": "Vypeckované tresne 65%, cukor 35%, barvivo: Červeň Allura AC - može nepríznivé ovplyvnať činnosť a pozornosť detí, kyselina citrónová, konzervanty: OXID SIRIČITÝ, chlorid vápenatý",
+    "origin": "Čína",
+    "storage": "V suchu mimo priameho slnečného žiarenia",
+    "values": [
+      {"label": "Energia", "value": "1395 kJ/333 kcal"},
+      {"label": "Tuky", "value": "0,7 g"},
+      {"label": "z toho nasýtené mastné kyseliny", "value": "0,15 g"},
+      {"label": "Sacharidy", "value": "80,5 g"},
+      {"label": "z toho cukry", "value": "67,2 g"},
+      {"label": "Bielkoviny", "value": "1,25 g"},
+      {"label": "Soľ", "value": "0 g"}
+    ]
+  },
+  "datle_susene": {
+    "composition": "Sušené datle vypeckované",
+    "origin": "Tunisko",
+    "storage": "V suchu a chráňte pred teplom",
+    "values": [
+      {"label": "Energia", "value": "1243kJ/294 kcal"},
+      {"label": "Tuky", "value": "0,5 g"},
+      {"label": "z toho nasýtené mastné kyseliny", "value": "0,1 g"},
+      {"label": "Sacharidy", "value": "65 g"},
+      {"label": "z toho cukry", "value": "64 g"},
+      {"label": "Vláknina", "value": "8,7 g"},
+      {"label": "Bielkoviny", "value": "1,9 g"},
+      {"label": "Soľ", "value": "0,09 g"}
+    ]
+  },
+  "figy_susene": {
+    "composition": "Fiky sušené celé",
+    "origin": "Maroko",
+    "storage": "V suchu do 22°C, chráňte pred priamym slnečným žiarením a produktkov so silným zápachom",
+    "values": [
+      {"label": "Energia", "value": "1043 kJ / 249 kcal"},
+      {"label": "Tuky", "value": "1 g"},
+      {"label": "z toho nasýtené mastné kyseliny", "value": "0,1 g"},
+      {"label": "Sacharidy", "value": "64 g"},
+      {"label": "z toho cukry", "value": "48 g"},
+      {"label": "Vláknina", "value": "10 g"},
+      {"label": "Bielkoviny", "value": "3,3 g"},
+      {"label": "Soľ", "value": "0,05 g"}
+    ]
+  },
+  "goji_bobule": {
+    "composition": "Bobule kustovnice čínskej - goji",
+    "origin": "Čína",
+    "storage": "V suchu a chráňte pred teplom",
+    "values": [
+      {"label": "Energia", "value": "1461kJ/349 kcal"},
+      {"label": "Tuky", "value": "0,39 g"},
+      {"label": "z toho nasýtené mastné kyseliny", "value": "0 g"},
+      {"label": "Sacharidy", "value": "77,1 g"},
+      {"label": "z toho cukry", "value": "45,6 g"},
+      {"label": "Vláknina", "value": "13 g"},
+      {"label": "Bielkoviny", "value": "14,3 g"},
+      {"label": "Soľ", "value": "0,0 g"}
+    ]
+  },
+  "hrozienka_jogurtova_poleva": {
+    "composition": "Hrozienka v jogurtovej polevy - balíček obsahuje hrozienka pokrytú jogurtovou polevou",
+    "origin": "Slovensko",
+    "storage": "V suchu",
+    "values": [
+      {"label": "Energia", "value": "~2400 kJ / ~570 kcal (odhadovaná hodnota)"},
+      {"label": "Poznámka", "value": "Presné údaje nie sú čitateľné z obrázka"}
+    ]
+  },
+  "hrozienka_mliena_cokolada": {
+    "composition": "Hrozienka v mlienej čokoláde",
+    "origin": "Slovensko",
+    "storage": "Skladujte v suchu",
+    "values": [
+      {"label": "Energia", "value": "~2450 kJ / ~580 kcal (odhadovaná hodnota)"},
+      {"label": "Poznámka", "value": "Presné údaje nie sú dostatočne čitateľné z obrázka balíčka"}
+    ]
+  },
+  "hrozno_zlate": {
+    "composition": "Rozinky 99,5%, slnečnicový olej 0,5%, oxid siričitý",
+    "origin": "Chile",
+    "storage": "Chráňte pred lepom a priamym slnečným žiarením",
+    "values": [
+      {"label": "Energia", "value": "1268 kJ/303 kcal"},
+      {"label": "Tuky", "value": "0,5 g"},
+      {"label": "z toho nasýtené mastné kyseliny", "value": "0,15 g"},
+      {"label": "Sacharidy", "value": "79,5 g"},
+      {"label": "z toho cukry", "value": "59,2 g"},
+      {"label": "Vláknina", "value": "4 g"},
+      {"label": "Bielkoviny", "value": "3,4 g"},
+      {"label": "Soľ", "value": "0 g"}
+    ]
+  },
+  "ibistek_kandizovany": {
+    "composition": "Kvet ibišteka 67%, cukor, konzervačná látka oxid siričitý, regulátor kyslosti: kyselina citrónová",
+    "origin": "Thajsko",
+    "storage": "V suchu a chráňte pred priamym slnečným žiarením",
+    "values": [
+      {"label": "Energia", "value": "1255kJ/350 kcal"},
+      {"label": "Tuky", "value": "0 g"},
+      {"label": "z toho nasýtené mastné kyseliny", "value": "0 g"},
+      {"label": "Sacharidy", "value": "88 g"},
+      {"label": "z toho cukry", "value": "80 g"},
+      {"label": "Vláknina", "value": "1 g"},
+      {"label": "Bielkoviny", "value": "0 g"},
+      {"label": "Soľ", "value": "0 g"}
+    ]
+  },
+  "kavove_hrudky_horka_cokolada": {
+    "composition": "Kávové hrudky (75%) v horké čokoláde (25%)",
+    "origin": "Česká republika",
+    "storage": "Skladujte v chlade, suchú, tme a chráňte pred lepom a priamym slnečným žiarením",
+    "values": [
+      {"label": "Energia", "value": "1905 kJ / 464 kcal"},
+      {"label": "Tuky", "value": "17 g"},
+      {"label": "z toho nasýtené mastné kyseliny", "value": "Nedostupné"},
+      {"label": "Sacharidy", "value": "69 g"},
+      {"label": "z toho cukry", "value": "Nedostupné"},
+      {"label": "Bielkoviny", "value": "Nedostupné"},
+      {"label": "Soľ", "value": "Nedostupné"}
+    ]
+  },
+  "kokos_platky": {
+    "composition": "Kokosové orechy plátky",
+    "origin": "Srí Lanka",
+    "storage": "Do 22°C a vlhkosti vzduchu do 70%. Chráňte pred priamym slnečným žiarením",
+    "values": [
+      {"label": "Energia", "value": "2761 kJ / 660 kcal"},
+      {"label": "Tuky", "value": "64,5 g"},
+      {"label": "z toho nasýtené mastné kyseliny", "value": "57,2 g"},
+      {"label": "Sacharidy", "value": "23,7 g"},
+      {"label": "z toho cukry", "value": "7,4 g"},
+      {"label": "Vláknina", "value": "16,3 g"},
+      {"label": "Bielkoviny", "value": "6,9 g"},
+      {"label": "Soľ", "value": "0 g"}
+    ]
+  },
+  "kesu_orechy_horka_cokolada": {
+    "composition": "Kešu orechy v horké čokoláde",
+    "origin": "Slovensko",
+    "storage": "V suchu",
+    "values": [
+      {"label": "Energia", "value": "~2400 kJ / ~570 kcal (odhadovaná hodnota)"},
+      {"label": "Poznámka", "value": "Presné údaje nie sú dostupné z obrázka balíčka"}
+    ]
+  },
+  "lieskovce_mliena_cokolada": {
+    "composition": "Lieskové orechy (jadrá prelúpané 90%) v mlienej čokoláde",
+    "origin": "Slovensko",
+    "storage": "V suchu. Chráňte pred teplom a priamym slnečným žiarením",
+    "values": [
+      {"label": "Energia", "value": "~2450 kJ / ~580 kcal (odhadovaná hodnota)"},
+      {"label": "Poznámka", "value": "Presné údaje nie sú dostatočne čitateľné z obrázka balíčka"}
+    ]
+  },
+  "lieskovce_mliena_cokolada_skorica": {
+    "composition": "Lieskové orechy v mlienej čokoláde a skoricou",
+    "origin": "Slovensko",
+    "storage": "V suchu. Chráňte pred teplom a priamym slnečným žiarením",
+    "values": [
+      {"label": "Energia", "value": "~2400 kJ / ~570 kcal (odhadovaná hodnota)"},
+      {"label": "Poznámka", "value": "Presné údaje nie sú dostupné z obrázka balíčka"}
+    ]
+  },
+  "mandle_bila_cokolada": {
+    "composition": "Mandle jahodové",
+    "origin": "Česká republika",
+    "storage": "Do 22°C v suchu",
+    "values": [
+      {"label": "Energia", "value": "2390 kJ / 574 kcal"},
+      {"label": "Tuky", "value": "39,4 g"},
+      {"label": "z toho nasýtené mastné kyseliny", "value": "15,7 g"},
+      {"label": "Sacharidy", "value": "43,8 g"},
+      {"label": "z toho cukry", "value": "40,4 g"},
+      {"label": "Vláknina", "value": "3,7 g"},
+      {"label": "Bielkoviny", "value": "9 g"},
+      {"label": "Soľ", "value": "0,2 g"}
+    ]
+  },
+  "mandle_horka_cokolada": {
+    "composition": "Mandle jadrá pražené 20%, kakao, cukry, kakáové maslo, emulgátor: lecitín, vanilkový sójový lecitín a polyglycerolopoylricinoleast, vanilkový extrakt",
+    "origin": "Česká republika",
+    "storage": "V suchu. Chráňte pred teplom a priamym slnečným žiarením",
+    "values": [
+      {"label": "Energia", "value": "~2350 kJ / ~560 kcal (odhadovaná hodnota)"},
+      {"label": "Poznámka", "value": "Presné údaje nie sú dostatočne čitateľné z obrázka"}
+    ]
+  },
+  "mandle_karamel": {
+    "composition": "Mandle v mlienej čokoláde s karamelom",
+    "origin": "Slovensko",
+    "storage": "V suchu",
+    "values": [
+      {"label": "Energia", "value": "~2400 kJ / ~570 kcal (odhadovaná hodnota)"},
+      {"label": "Poznámka", "value": "Presné údaje nie sú dostupné z obrázka balíčka"}
+    ]
+  },
+  "mandle_mliena_cokolada": {
+    "composition": "Mandle v mlienej čokoláde",
+    "origin": "Slovensko",
+    "storage": "V suchu. Chráňte pred teplom a priamym slnečným žiarením",
+    "values": [
+      {"label": "Energia", "value": "~2450 kJ / ~580 kcal (odhadovaná hodnota)"},
+      {"label": "Poznámka", "value": "Presné údaje nie sú dostatočne čitateľné z obrázka balíčka"}
+    ]
+  },
+  "mandle_mliena_cokolada_skorica": {
+    "composition": "Mandle v mlienej čokoláde a skoricou",
+    "origin": "Slovensko",
+    "storage": "V suchu. Chráňte pred teplom a priamym slnečným žiarením",
+    "values": [
+      {"label": "Energia", "value": "~2400 kJ / ~570 kcal (odhadovaná hodnota)"},
+      {"label": "Poznámka", "value": "Presné údaje nie sú dostupné z obrázka balíčka"}
+    ]
+  },
+  "marhule_susene": {
+    "composition": "Meruňky sušené tasty",
+    "origin": "Tadžikistán",
+    "storage": "Skladujte na suchom a tmavom mieste v uzavretom originálnom obale, pri izbovej teplote a do 70% vlhkosti",
+    "values": [
+      {"label": "Energia", "value": "1189 kJ/284 kcal"},
+      {"label": "Tuky", "value": "0,7 g"},
+      {"label": "z toho nasýtené mastné kyseliny", "value": "0,08 g"},
+      {"label": "Sacharidy", "value": "61 g"},
+      {"label": "z toho cukry", "value": "48,6 g"},
+      {"label": "Bielkoviny", "value": "3,6 g"},
+      {"label": "Soľ", "value": "0,02 g"}
+    ]
+  },
+  "marhule_nesyrene": {
+    "composition": "Marhule",
+    "origin": "Tadžikistán",
+    "storage": "Skladujte v suchu a tmavom mieste",
+    "values": [
+      {"label": "Energia", "value": "1189 kJ / 284 kcal"},
+      {"label": "Tuky", "value": "0,7 g"},
+      {"label": "z toho nasýtené mastné kyseliny", "value": "0,08 g"},
+      {"label": "Sacharidy", "value": "61 g"},
+      {"label": "z toho cukry", "value": "48,6 g"},
+      {"label": "Bielkoviny", "value": "3,6 g"},
+      {"label": "Soľ", "value": "0,02 g"}
+    ]
+  },
+  "ovocny_komprimant": {
+    "composition": "Rozinky (66,58%), sunka (13%) a ostatné ovocie a omáčka",
+    "origin": "Čína",
+    "storage": "V suchu",
+    "values": [
+      {"label": "Energia", "value": "1628 kJ / 389 kcal"},
+      {"label": "Tuky", "value": "2 g"},
+      {"label": "z toho nasýtené mastné kyseliny", "value": "0,2 g"},
+      {"label": "Sacharidy", "value": "82 g"},
+      {"label": "z toho cukry", "value": "63 g"},
+      {"label": "Bielkoviny", "value": "2 g"},
+      {"label": "Soľ", "value": "0,1 g"}
+    ]
+  },
+  "papaja_kandizovana": {
+    "composition": "Papája, cukor, konzervačná látka oxid siričitý",
+    "origin": "Thajsko",
+    "storage": "Chráňte pred účinkami slnka a mrazu",
+    "values": [
+      {"label": "Energia", "value": "1348kJ/322 kcal"},
+      {"label": "Tuky", "value": "0 g"},
+      {"label": "z toho nasýtené mastné kyseliny", "value": "0 g"},
+      {"label": "Sacharidy", "value": "83 g"},
+      {"label": "z toho cukry", "value": "63 g"},
+      {"label": "Bielkoviny", "value": "0 g"},
+      {"label": "Soľ", "value": "0,03 g"}
+    ]
+  },
+  "slivky_susene": {
+    "composition": "BIO sušené slivky 100%",
+    "origin": "Bulharsko",
+    "storage": "V suchu a chráňte pred priamym slnečným žiarením",
+    "values": [
+      {"label": "Energia", "value": "1086kJ/258 kcal"},
+      {"label": "Tuky", "value": "0,6 g"},
+      {"label": "z toho nasýtené mastné kyseliny", "value": "0,1 g"},
+      {"label": "Sacharidy", "value": "47 g"},
+      {"label": "z toho cukry", "value": "41 g"},
+      {"label": "Vláknina", "value": "18 g"},
+      {"label": "Bielkoviny", "value": "2,3 g"},
+      {"label": "Soľ", "value": "0,02 g"}
+    ]
+  },
+  "slnecnica_farebna_cokolada": {
+    "composition": "Slnečnica farebná v čokoláde",
+    "origin": "Slovensko",
+    "storage": "V suchu",
+    "values": [
+      {"label": "Energia", "value": "~2350 kJ / ~560 kcal (odhadovaná hodnota)"},
+      {"label": "Poznámka", "value": "Presné údaje nie sú dostupné z obrázka balíčka"}
+    ]
+  },
+  "visne_horka_cokolada": {
+    "composition": "Višne v horké čokoláde",
+    "origin": "Slovensko",
+    "storage": "V suchu. Chráňte pred teplom a priamym slnečným žiarením",
+    "values": [
+      {"label": "Energia", "value": "1860 kJ / 443 kcal"},
+      {"label": "Tuky", "value": "17 g"},
+      {"label": "z toho nasýtené mastné kyseliny", "value": "Nedostupné"},
+      {"label": "Sacharidy", "value": "60 g"},
+      {"label": "z toho cukry", "value": "Nedostupné"},
+      {"label": "Bielkoviny", "value": "3,5 g"},
+      {"label": "Soľ", "value": "Nedostupné"}
+    ]
+  },
+  "zazvor_suseny": {
+    "composition": "Sušený zázvor, cukor, konzervačná látka SO2",
+    "origin": "Nedostupné",
+    "storage": "V suchu a tmavom mieste v uzavretom originálnom obale, pri izbovej teplote a do 70% vlhkosti",
+    "values": [
+      {"label": "Energia", "value": "1550kJ/ 365kcal"},
+      {"label": "Tuky", "value": "2 g"},
+      {"label": "z toho nasýtené mastné kyseliny", "value": "0g"},
+      {"label": "Sacharidy", "value": "86 g"},
+      {"label": "z toho cukry", "value": "70 g"},
+      {"label": "Vláknina", "value": "1,1 g"},
+      {"label": "Bielkoviny", "value": "0,3 g"},
+      {"label": "Soľ", "value": "0,36g"}
+    ]
+  },
+  "cokooocka": {
+    "composition": "Sladá farebná čokolada s cukrovničkami",
+    "origin": "Česká republika",
+    "storage": "Skladujte v suchu",
+    "values": [
+      {"label": "Energia", "value": "~2300 kJ / ~550 kcal (odhadovaná hodnota)"},
+      {"label": "Poznámka", "value": "Presné údaje nie sú dostupné z obrázka balíčka"}
+    ]
+  },
+  "brusnica_horka_cokolada": {
+    "composition": "Brusnice kandizované 50% v horké čokoláde",
+    "origin": "Slovensko",
+    "storage": "V suchu. Chráňte pred teplom a priamym slnečným žiarením",
+    "values": [
+      {"label": "Energia", "value": "~1900 kJ / ~450 kcal (odhadovaná hodnota)"},
+      {"label": "Poznámka", "value": "Presné údaje nie sú dostatočne čitateľné z obrázka"}
+    ]
+  },
+  "arasidy_jogurtova_poleva": {
+    "composition": "Arašídy v jogurtovej polevy",
+    "origin": "Slovensko",
+    "storage": "V suchu",
+    "values": [
+      {"label": "Energia", "value": "~2350 kJ / ~560 kcal (odhadovaná hodnota)"},
+      {"label": "Poznámka", "value": "Presné údaje nie sú dostupné z obrázka balíčka"}
+    ]
+  },
+  "arasidy_mliena_cokolada": {
+    "composition": "Arašídy v mlienej čokoláde",
+    "origin": "Slovensko",
+    "storage": "V suchu. Chráňte pred teplom a priamym slnečným žiarením",
+    "values": [
+      {"label": "Energia", "value": "2420 kJ / 514 kcal"},
+      {"label": "Tuky", "value": "42 g"},
+      {"label": "z toho nasýtené mastné kyseliny", "value": "Nedostupné"},
+      {"label": "Sacharidy", "value": "35 g"},
+      {"label": "z toho cukry", "value": "Nedostupné"},
+      {"label": "Bielkoviny", "value": "Nedostupné"},
+      {"label": "Soľ", "value": "Nedostupné"}
+    ]
+  }
+}
