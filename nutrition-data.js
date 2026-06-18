@@ -813,6 +813,491 @@ if (typeof window !== 'undefined') {
       origin: "Filipíny",
       storage: "Chraňte pred teplotom",
       values: []
+    },
+    hrozno_jog: {
+      composition: "sušené hrozienka 50%, slnečnicový olej, konzervačná látka oxid siričitý, jogurtová poleva 49% (cukor, hydrogenizovaný palmo-jadrový olej, srvátka v prášku, jogurt v prášku 2%, emulgátor sójový lecitín a E476, kyselina citrónová, prírodne identická jogurtová aróma), povlaková látka – arabská guma, selak, cukor, glukózový sirup, kukuričný škrob modifikovaný, palmový olej, kokosový olej, etanol, konzervačná látka E202",
+      origin: "Slovenská republika",
+      storage: "Skladujte v suchu a chráňte pred účinkami slnka a mrazu",
+      values: [
+        { label: "Energia", value: "1860 kJ / 444 kcal" },
+        { label: "Tuky", value: "22,2 g" },
+        { label: "z toho nasýtené mastné kyseliny", value: "6,1 g" },
+        { label: "Sacharidy", value: "42,5 g" },
+        { label: "z toho cukry", value: "35 g" },
+        { label: "Bielkoviny", value: "3 g" },
+        { label: "Soľ", value: "0,14 g" }
+      ]
+    },
+    hrozno_ml: {
+      composition: "sušené hrozienka 55%, slnečnicový olej, konzervačná látka oxid siričitý, mliečna čokoláda 44% (kakaové maslo, cukor, kakaová hmota, emulgátor sójový lecitín, sušené mlieko, sušená srvátka, prírodná vanilková aróma), povlaková látka (arabská guma, šelak, sukralóza, glukózový sirup, kokosový a repkový olej, maltodextrín)",
+      origin: "Slovensko",
+      storage: "Skladujte v suchu. Chráňte pred účinkami slnka a mrazu",
+      values: [
+        { label: "Energia", value: "1796 kJ / 429 kcal" },
+        { label: "Tuky", value: "16 g" },
+        { label: "z toho nasýtené mastné kyseliny", value: "9 g" },
+        { label: "Sacharidy", value: "65 g" },
+        { label: "z toho cukry", value: "61 g" },
+        { label: "Bielkoviny", value: "4,1 g" },
+        { label: "Soľ", value: "0,13 g" }
+      ]
+    },
+    kesu_h: {
+      composition: "horká čokoláda 74% (kakaové maslo, cukor, kakaová hmota, emulgátor sójový lecitín, sušené mlieko, prírodná vanilková aróma), kešu orechy pražené 25%, povlaková látka (sukralóza, glukózový sirup, olej kokosový a palmový, arabská guma, šelak, etanol, regulátor kyslosti kyselina citrónová, konzervačná látka E200)",
+      origin: "Slovensko",
+      storage: "Skladujte v suchu. Chráňte pred účinkami slnka a mrazu",
+      values: [
+        { label: "Energia", value: "2274 kJ / 543 kcal" },
+        { label: "Tuky", value: "34,1 g" },
+        { label: "z toho nasýtené mastné kyseliny", value: "17,8 g" },
+        { label: "Sacharidy", value: "44,8 g" },
+        { label: "z toho cukry", value: "34,9 g" },
+        { label: "Bielkoviny", value: "7,9 g" },
+        { label: "Soľ", value: "0 g" }
+      ]
+    },
+    liesk_ml: {
+      composition: "mliečna čokoláda 79% (kakaové maslo, cukor, kakaová hmota, emulgátor sójový lecitín, sušené mlieko, prírodná vanilková aróma), jadrá lieskových orechov pražené 20%, povlaková látka (arabská guma, šelak, sukralóza, glukózový sirup, olej kokosový a palmový, etanol, regulátor kyslosti kyselina citrónová, konzervačná látka E200)",
+      origin: "Slovensko",
+      storage: "Skladujte v suchu. Chráňte pred účinkami slnka a mrazu",
+      values: [
+        { label: "Energia", value: "2395 kJ / 572 kcal" },
+        { label: "Tuky", value: "40 g" },
+        { label: "z toho nasýtené mastné kyseliny", value: "18,4 g" },
+        { label: "Sacharidy", value: "47 g" },
+        { label: "z toho cukry", value: "44 g" },
+        { label: "Bielkoviny", value: "8 g" },
+        { label: "Soľ", value: "0,25 g" }
+      ]
+    },
+    liesk_sk: {
+      composition: "mliečna čokoláda 79% (kakaové maslo, cukor, kakaová hmota, emulgátor sójový lecitín, sušené mlieko, prírodná vanilková aróma), jadrá lieskových orechov pražené 20%, škorica mletá 1%",
+      origin: "Slovensko",
+      storage: "Skladujte v suchu. Chráňte pred účinkami slnka a mrazu",
+      values: [
+        { label: "Energia", value: "2353 kJ / 562 kcal" },
+        { label: "Tuky", value: "38,2 g" },
+        { label: "z toho nasýtené mastné kyseliny", value: "18,4 g" },
+        { label: "Sacharidy", value: "47 g" },
+        { label: "z toho cukry", value: "44 g" },
+        { label: "Bielkoviny", value: "8 g" },
+        { label: "Soľ", value: "0,25 g" }
+      ]
+    },
+    mandle_ml: {
+      composition: "mliečna čokoláda 79% (cukor, kakaové maslo, sušené mlieko, kakaová hmota, prírodná vanilková aróma, emulgátor sójový lecitín), mandle pražené 20%, povlaková látka (sukralóza, glukózový sirup, olej kokosový a palmový, arabská guma, šelak, etanol, regulátor kyslosti kyselina citrónová, konzervačná látka E200)",
+      origin: "Slovensko",
+      storage: "Skladujte v suchu. Chráňte pred účinkami slnka a mrazu",
+      values: [
+        { label: "Energia", value: "2353 kJ / 562 kcal" },
+        { label: "Tuky", value: "38 g" },
+        { label: "z toho nasýtené mastné kyseliny", value: "18,3 g" },
+        { label: "Sacharidy", value: "48,3 g" },
+        { label: "z toho cukry", value: "44 g" },
+        { label: "Bielkoviny", value: "9,4 g" },
+        { label: "Soľ", value: "0,03 g" }
+      ]
+    },
+    mandle_sk: {
+      composition: "mliečna čokoláda 65% (cukor, kakaové maslo, kakaová hmota, emulgátor sójový lecitín, sušené mlieko, prírodná vanilková aróma), mandle pražené 35%, škorica mletá 1%",
+      origin: "Slovensko",
+      storage: "Skladujte v suchu. Chráňte pred účinkami slnka a mrazu",
+      values: [
+        { label: "Energia", value: "2382 kJ / 572 kcal" },
+        { label: "Tuky", value: "38,3 g" },
+        { label: "z toho nasýtené mastné kyseliny", value: "13,3 g" },
+        { label: "Sacharidy", value: "42 g" },
+        { label: "z toho cukry", value: "41,2 g" },
+        { label: "Bielkoviny", value: "12,3 g" },
+        { label: "Soľ", value: "0,25 g" }
+      ]
+    },
+    mandle_h: {
+      composition: "horká čokoláda 79% (cukor, kakaové maslo, kakaová hmota, prírodná vanilková aróma, emulgátor sójový lecitín), jadrá sladkých mandlí pražené 20%, povlaková látka (arabská guma, šelak, sukralóza, glukózový sirup, olej kokosový a palmový, etanol, regulátor kyslosti kyselina citrónová, konzervačná látka E200)",
+      origin: "Slovenská republika",
+      storage: "Skladujte v suchu a chráňte pred účinkami slnka a mrazu",
+      values: [
+        { label: "Energia", value: "2307 kJ / 551 kcal" },
+        { label: "Tuky", value: "50,2 g" },
+        { label: "z toho nasýtené mastné kyseliny", value: "37,4 g" },
+        { label: "Sacharidy", value: "33,8 g" },
+        { label: "z toho cukry", value: "17,8 g" },
+        { label: "Bielkoviny", value: "8,8 g" },
+        { label: "Soľ", value: "0,15 g" }
+      ]
+    },
+    ovoc_zele: {
+      composition: "cukor, glukózový sirup, čokoláda 16% (cukor, kakaová hmata, kakaové maslo, emulgátor sójový lecitín), voda, šťava z koncentrátov (jablko, pomaranč 0,04%), želírujúca látka (pektíny), kyselina citrónová, prírodné arómy",
+      origin: "Slovenská republika",
+      storage: "Skladujte v suchu, chráňte pred teplom a priamym slnečným žiarením",
+      values: [
+        { label: "Energia", value: "1485 kJ / 351 kcal" },
+        { label: "Tuky", value: "5,6 g" },
+        { label: "z toho nasýtené mastné kyseliny", value: "3,3 g" },
+        { label: "Sacharidy", value: "73 g" },
+        { label: "z toho cukry", value: "63 g" },
+        { label: "Bielkoviny", value: "0,8 g" },
+        { label: "Soľ", value: "0,25 g" }
+      ]
+    },
+    slnecn_c: {
+      composition: "semienka lúpanej slnečnice 40%, palmový olej, cukor, kakaový prášok, maltodextrín, emulgátor sójový lecitín E322, sušené plnotučné mlieko, karnaubský vosk E903, zahusťovadlo E414, regulátor kyslosti kyselina citrónová, farbivá E100, E140, E160c, E171, E150d",
+      origin: "Čína",
+      storage: "Skladujte v suchu. Chráňte pred účinkami slnka a mrazu",
+      values: [
+        { label: "Energia", value: "2169 kJ / 518 kcal" },
+        { label: "Tuky", value: "33,7 g" },
+        { label: "z toho nasýtené mastné kyseliny", value: "8,8 g" },
+        { label: "Sacharidy", value: "40,6 g" },
+        { label: "z toho cukry", value: "38,9 g" },
+        { label: "Bielkoviny", value: "11 g" },
+        { label: "Soľ", value: "0,02 g" }
+      ]
+    },
+    broskyne: {
+      composition: "glukózový sirup, cukor, modifikovaný zemiakový škrob, hroznová šťava z koncentrátu 5%, želatína, regulátor kyslosti (kyselina citrónová), kyseliny (kyselina mliečna, kyselina fumarová), arómy",
+      origin: "Česká republika",
+      storage: "Skladujte v suchu, chráňte pred teplom a priamym slnečným žiarením",
+      values: [
+        { label: "Energia", value: "1449 kJ / 334 kcal" },
+        { label: "Tuky", value: "0,1 g" },
+        { label: "z toho nasýtené mastné kyseliny", value: "0 g" },
+        { label: "Sacharidy", value: "80,2 g" },
+        { label: "z toho cukry", value: "50,2 g" },
+        { label: "Bielkoviny", value: "3,6 g" },
+        { label: "Soľ", value: "0,04 g" }
+      ]
+    },
+    cola: {
+      composition: "glukózový sirup, cukor, želatína, voda, hroznová šťava z koncentrátu, regulátor kyslosti (kyselina citrónová), arómy, povlaková látka (karnaubský vosk), farbivá: E150d",
+      origin: "Česká republika",
+      storage: "Skladujte v suchu a chlade. Nevystavujte priamemu slnečnému žiareniu",
+      values: [
+        { label: "Energia", value: "1398 kJ / 329 kcal" },
+        { label: "Tuky", value: "0,2 g" },
+        { label: "z toho nasýtené mastné kyseliny", value: "0,2 g" },
+        { label: "Sacharidy", value: "73,9 g" },
+        { label: "z toho cukry", value: "46 g" },
+        { label: "Bielkoviny", value: "6,3 g" },
+        { label: "Soľ", value: "0,05 g" }
+      ]
+    },
+    cer_zele: {
+      composition: "glukózový sirup, cukor, voda, želatína, regulátor kyslosti (kyselina citrónová), koncentrát z hroznovej šťavy 1,25%, arómy, povlaková zmes (kokosový olej, karnaubský vosk), farbivá: E102, E129, E133",
+      origin: "Česká republika",
+      storage: "Skladujte v suchu a chlade. Nevystavujte priamemu slnečnému žiareniu",
+      values: [
+        { label: "Energia", value: "1400 kJ / 329 kcal" },
+        { label: "Tuky", value: "0,3 g" },
+        { label: "z toho nasýtené mastné kyseliny", value: "0,2 g" },
+        { label: "Sacharidy", value: "74 g" },
+        { label: "z toho cukry", value: "46,1 g" },
+        { label: "Bielkoviny", value: "6,3 g" },
+        { label: "Soľ", value: "0,05 g" }
+      ]
+    },
+    karamel: {
+      composition: "glukózový sirup, cukor, voda, rastlinné oleje (shea, kokosový), zvhlčovadlo (sorbitol), želatína, arómy, farbivo (E150c), soľ, leštiaca látka (karnaubský vosk)",
+      origin: "Slovenská republika",
+      storage: "Skladujte v suchu, chráňte pred teplom a priamym slnečným žiarením",
+      values: [
+        { label: "Energia", value: "1690 kJ / 402 kcal" },
+        { label: "Tuky", value: "6,9 g" },
+        { label: "z toho nasýtené mastné kyseliny", value: "4,2 g" },
+        { label: "Sacharidy", value: "84 g" },
+        { label: "z toho cukry", value: "43 g" },
+        { label: "Bielkoviny", value: "1,1 g" },
+        { label: "Soľ", value: "0,09 g" }
+      ]
+    },
+    kysle_hr: {
+      composition: "cukor, glukózový sirup, modifikovaný škrob, škrob, kyseliny (kyselina mliečna, kyselina jablčná), regulátor kyslosti (jablčnany sodné), prírodné arómy, koncentráty z (čiernej mrkvy, spiruly, požltu farbiarskeho, mrkvy, čiernych ríbezlí), farbivá E160c, E100",
+      origin: "Slovenská republika",
+      storage: "Skladujte v suchu, chráňte pred teplom a priamym slnečným žiarením",
+      values: [
+        { label: "Energia", value: "1513 kJ / 357 kcal" },
+        { label: "Tuky", value: "0 g" },
+        { label: "z toho nasýtené mastné kyseliny", value: "0 g" },
+        { label: "Sacharidy", value: "88 g" },
+        { label: "z toho cukry", value: "55 g" },
+        { label: "Bielkoviny", value: "0 g" },
+        { label: "Soľ", value: "0,46 g" }
+      ]
+    },
+    kysle_p: {
+      composition: "cukor, pšeničná múka, glukózový sirup, hroznová šťava z koncentrátu 15%, kyselina jablčná, rastlinné oleje (kokosový, bambucký), regulátor kyslosti (kyselina citrónová, citrany sodné), zvlhčovadlo (glycerol), aróma, emulgátor (mono- a diglyceridy mastných kyselín), farbivá E100, E160c, E141",
+      origin: "Česká republika",
+      storage: "Skladujte v suchu, chráňte pred teplom a priamym slnečným žiarením",
+      values: [
+        { label: "Energia", value: "1578 kJ / 372 kcal" },
+        { label: "Tuky", value: "2,7 g" },
+        { label: "z toho nasýtené mastné kyseliny", value: "1,7 g" },
+        { label: "Sacharidy", value: "81 g" },
+        { label: "z toho cukry", value: "53 g" },
+        { label: "Bielkoviny", value: "3,3 g" },
+        { label: "Soľ", value: "0,33 g" }
+      ]
+    },
+    malina_z: {
+      composition: "glukózový sirup, cukor, želatína, voda, hroznová šťava z koncentrátu, regulátor kyslosti (kyselina citrónová), arómy, povlaková látka (karnaubský vosk), farbivá E120, E153",
+      origin: "Česká republika",
+      storage: "Skladujte v suchu a chlade. Nevystavujte priamemu slnečnému žiareniu",
+      values: [
+        { label: "Energia", value: "1398 kJ / 329 kcal" },
+        { label: "Tuky", value: "0,2 g" },
+        { label: "z toho nasýtené mastné kyseliny", value: "0,2 g" },
+        { label: "Sacharidy", value: "73,9 g" },
+        { label: "z toho cukry", value: "46 g" },
+        { label: "Bielkoviny", value: "6,3 g" },
+        { label: "Soľ", value: "0,05 g" }
+      ]
+    },
+    mega_med: {
+      composition: "glukózový sirup, cukor, voda, želatína, hroznová šťava z koncentrátu 5%, regulátor kyslosti (kyselina citrónová), arómy, leštiaca látka – karnaubský vosk, farbivá: E100, E141, E160c",
+      origin: "Česká republika",
+      storage: "Skladujte v suchu, chráňte pred teplom a priamym slnečným žiarením",
+      values: [
+        { label: "Energia", value: "1398 kJ / 329 kcal" },
+        { label: "Tuky", value: "0,2 g" },
+        { label: "z toho nasýtené mastné kyseliny", value: "0,2 g" },
+        { label: "Sacharidy", value: "73,9 g" },
+        { label: "z toho cukry", value: "46 g" },
+        { label: "Bielkoviny", value: "6,3 g" },
+        { label: "Soľ", value: "0,05 g" }
+      ]
+    },
+    melon: {
+      composition: "cukor, glukózový sirup, voda, želatína, zvhlčujúca látka (E420), kyseliny (E330, E296, E270), želírujúca látka (pektín), arómy, regulátory kyslosti (E325, E350), rastlinné koncentráty (šafran, mrkva, čierne ríbezle), farbivo E133",
+      origin: "Španielsko",
+      storage: "Skladujte v suchu, chráňte pred teplom a priamym slnečným žiarením",
+      values: [
+        { label: "Energia", value: "1387 kJ / 326 kcal" },
+        { label: "Tuky", value: "0 g" },
+        { label: "z toho nasýtené mastné kyseliny", value: "0 g" },
+        { label: "Sacharidy", value: "79 g" },
+        { label: "z toho cukry", value: "58 g" },
+        { label: "Bielkoviny", value: "4 g" },
+        { label: "Soľ", value: "0,10 g" }
+      ]
+    },
+    mini_med: {
+      composition: "glukózový sirup, cukor, želatína, voda, hroznová šťava z koncentrátu 5%, regulátor kyslosti (kyselina citrónová), rastlinné koncentráty (svetlica farebná, čierna mrkva, bezinka), koncentrát spiruliny, prírodné arómy, leštiaca látka (karnaubský vosk)",
+      origin: "Česká republika",
+      storage: "Skladujte v suchu a chlade. Nevystavujte priamemu slnečnému žiareniu",
+      values: [
+        { label: "Energia", value: "1352 kJ / 319 kcal" },
+        { label: "Tuky", value: "0,5 g" },
+        { label: "z toho nasýtené mastné kyseliny", value: "0,2 g" },
+        { label: "Sacharidy", value: "75 g" },
+        { label: "z toho cukry", value: "51 g" },
+        { label: "Bielkoviny", value: "6 g" },
+        { label: "Soľ", value: "0,02 g" }
+      ]
+    },
+    neon: {
+      composition: "glukózový sirup, cukor, modifikovaný zemiakový škrob, hroznová šťava z koncentrátu 5%, želatína, regulátor kyslosti (kyselina citrónová), kyseliny (mliečna, fumarová), arómy, farbivá: E100, E133, E160c",
+      origin: "Česká republika",
+      storage: "Skladujte v suchu, chráňte pred teplom a priamym slnečným žiarením",
+      values: [
+        { label: "Energia", value: "1449 kJ / 341 kcal" },
+        { label: "Tuky", value: "0,1 g" },
+        { label: "z toho nasýtené mastné kyseliny", value: "0 g" },
+        { label: "Sacharidy", value: "80,2 g" },
+        { label: "z toho cukry", value: "50,2 g" },
+        { label: "Bielkoviny", value: "3,6 g" },
+        { label: "Soľ", value: "0,04 g" }
+      ]
+    },
+    ostr: {
+      composition: "glukózový sirup, cukor, želatína, voda, hroznová šťava z koncentrátu, regulátor kyslosti (kyselina citrónová), arómy, povlaková látka (karnaubský vosk), farbivá E120, E153",
+      origin: "Česká republika",
+      storage: "Skladujte v suchu a chlade. Nevystavujte priamemu slnečnému žiareniu",
+      values: [
+        { label: "Energia", value: "1398 kJ / 329 kcal" },
+        { label: "Tuky", value: "0,2 g" },
+        { label: "z toho nasýtené mastné kyseliny", value: "0,2 g" },
+        { label: "Sacharidy", value: "73,9 g" },
+        { label: "z toho cukry", value: "46 g" },
+        { label: "Bielkoviny", value: "6,3 g" },
+        { label: "Soľ", value: "0,05 g" }
+      ]
+    },
+    ostr_p: {
+      composition: "glukózový sirup, cukor, perličky (cukor, glukózový sirup, voda, farbivá – karmíny, rastlinné uhlie, karotény; želírujúca látka: arabská guma, arómy, leštiaca látka: včelí vosk, regulátor kyslosti: kyselina citrónová), želatína, ovocná šťava z koncentrátu 3%, regulátor kyslosti (kyselina citrónová), aróma, kokosový olej",
+      origin: "Česká republika",
+      storage: "Skladujte v suchu, chráňte pred teplom a priamym slnečným žiarením",
+      values: [
+        { label: "Energia", value: "1397 kJ / 329 kcal" },
+        { label: "Tuky", value: "0 g" },
+        { label: "z toho nasýtené mastné kyseliny", value: "0 g" },
+        { label: "Sacharidy", value: "78 g" },
+        { label: "z toho cukry", value: "59 g" },
+        { label: "Bielkoviny", value: "4,2 g" },
+        { label: "Soľ", value: "0,03 g" }
+      ]
+    },
+    ovocny_k: {
+      composition: "cukor, glukózový sirup, kyselina citrónová, kyselina L-askorbová, maltodextrín, kakaové maslo, protihrudkujúca látka: horečnaté soli mastných kyselín, arómy, rastlinné koncentráty: čierna mrkva, čierne ríbezle, požlt farbiarsky, farbivá: karotény",
+      origin: "Česká republika",
+      storage: "Skladujte v suchu, chráňte pred teplom a priamym slnečným žiarením",
+      values: [
+        { label: "Energia", value: "1729 kJ / 407 kcal" },
+        { label: "Tuky", value: "1,7 g" },
+        { label: "z toho nasýtené mastné kyseliny", value: "0,9 g" },
+        { label: "Sacharidy", value: "98 g" },
+        { label: "z toho cukry", value: "91 g" },
+        { label: "Bielkoviny", value: "0 g" },
+        { label: "Soľ", value: "0,01 g" }
+      ]
+    },
+    pendrek: {
+      composition: "cukor, glukózový sirup, pšeničná múka, voda, rastlinné oleje (shea a kokosový), extrakt zo sladkého drievka 1,2%, želatína, farbivá (rastlinná uhlíková čerň, karotény, amoniak-sulfitový karamel), emulgátor (mono- a diglyceridy mastných kyselín), konzervant (sorban draselný), regulátor kyslosti (kyselina vínna), rastlinné koncentráty (požlt farbiarsky, čierna mrkva), koncentrát spirulíny, kukuričný škrob, aróma: anetol, prírodné arómy",
+      origin: "Česká republika",
+      storage: "Skladujte v suchu, chráňte pred teplom a priamym slnečným žiarením",
+      values: [
+        { label: "Energia", value: "1532 kJ / 366 kcal" },
+        { label: "Tuky", value: "2,7 g" },
+        { label: "z toho nasýtené mastné kyseliny", value: "1,8 g" },
+        { label: "Sacharidy", value: "83 g" },
+        { label: "z toho cukry", value: "67 g" },
+        { label: "Bielkoviny", value: "2 g" },
+        { label: "Soľ", value: "0,05 g" }
+      ]
+    },
+    sovicky: {
+      composition: "glukózový sirup, cukor, voda, hroznová šťava z koncentrátu 5%, želatína, regulátor kyslosti (kyselina citrónová), arómy, povlaková látka (karnaubský vosk)",
+      origin: "Česká republika",
+      storage: "Skladujte v suchu, chráňte pred teplom a priamym slnečným žiarením",
+      values: [
+        { label: "Energia", value: "1475 kJ / 347 kcal" },
+        { label: "Tuky", value: "0,3 g" },
+        { label: "z toho nasýtené mastné kyseliny", value: "0,2 g" },
+        { label: "Sacharidy", value: "79,1 g" },
+        { label: "z toho cukry", value: "61,9 g" },
+        { label: "Bielkoviny", value: "5,4 g" },
+        { label: "Soľ", value: "0,03 g" }
+      ]
+    },
+    spuntici: {
+      composition: "glukózový sirup, cukor, voda, hroznová šťava z koncentrátu 5%, želatína, regulátor kyslosti (kyselina citrónová), arómy, povlaková látka (karnaubský vosk)",
+      origin: "Česká republika",
+      storage: "Skladujte v suchu, chráňte pred teplom a priamym slnečným žiarením",
+      values: [
+        { label: "Energia", value: "1475 kJ / 347 kcal" },
+        { label: "Tuky", value: "0,3 g" },
+        { label: "z toho nasýtené mastné kyseliny", value: "0,2 g" },
+        { label: "Sacharidy", value: "79,1 g" },
+        { label: "z toho cukry", value: "61,9 g" },
+        { label: "Bielkoviny", value: "5,4 g" },
+        { label: "Soľ", value: "0,03 g" }
+      ]
+    },
+    zuby: {
+      composition: "glukózový sirup, cukor, voda, hroznová šťava z koncentrátu 5%, želatína, regulátor kyslosti (kyselina citrónová), zahusťovadlo (pektíny), arómy, povlaková látka (karnaubský vosk), farbivá: BCJC",
+      origin: "Česká republika",
+      storage: "Skladujte v suchu a chlade. Nevystavujte priamemu slnečnému žiareniu",
+      values: [
+        { label: "Energia", value: "1418 kJ / 334 kcal" },
+        { label: "Tuky", value: "0,3 g" },
+        { label: "z toho nasýtené mastné kyseliny", value: "0,2 g" },
+        { label: "Sacharidy", value: "77,4 g" },
+        { label: "z toho cukry", value: "50,6 g" },
+        { label: "Bielkoviny", value: "4,1 g" },
+        { label: "Soľ", value: "0,03 g" }
+      ]
+    },
+    zabky: {
+      composition: "glukózový sirup, cukor, voda, želatína, regulátor kyslosti (kyselina citrónová), koncentrát z hroznovej šťavy 1,25%, zahusťovadlo (pektín), arómy, povlaková zmes (kokosový olej, karnaubský vosk), farbivá: E102, E133",
+      origin: "Česká republika",
+      storage: "Skladujte v suchu, chráňte pred teplom a priamym slnečným žiarením",
+      values: [
+        { label: "Energia", value: "1415 kJ / 333 kcal" },
+        { label: "Tuky", value: "0,3 g" },
+        { label: "z toho nasýtené mastné kyseliny", value: "0,2 g" },
+        { label: "Sacharidy", value: "77,5 g" },
+        { label: "z toho cukry", value: "50,7 g" },
+        { label: "Bielkoviny", value: "4,1 g" },
+        { label: "Soľ", value: "0,03 g" }
+      ]
+    },
+    cerviky: {
+      composition: "glukózový sirup, cukor, voda, želatína, hroznová šťava z koncentrátu 5%, regulátor kyslosti (kyselina citrónová), arómy, leštiaca látka (karnaubský vosk), farbivá E100, E141, E160c",
+      origin: "Česká republika",
+      storage: "Skladujte v suchu, chráňte pred teplom a priamym slnečným žiarením",
+      values: [
+        { label: "Energia", value: "1398 kJ / 329 kcal" },
+        { label: "Tuky", value: "0,2 g" },
+        { label: "z toho nasýtené mastné kyseliny", value: "0,2 g" },
+        { label: "Sacharidy", value: "73,9 g" },
+        { label: "z toho cukry", value: "46 g" },
+        { label: "Bielkoviny", value: "6,3 g" },
+        { label: "Soľ", value: "0,05 g" }
+      ]
+    },
+    aras_was: {
+      composition: "arašidy lúpané pražené 27,5%, pšeničná múka 22,1%, cukor 20,1%, kukuričný škrob 16,63%, kukuričná múka 7,13%, kokosový olej 4,6%, soľ 0,66%, sójová omáčka v prášku 0,63% (pšenica, sója, dextrín, soľ, koji), korenie 0,31% (horčičná príchuť, repkový olej, emulgátor arabská guma, dextrín, antioxidant rozmarínové extrakty), kypriaca látka uhličitan sodný, zemiakový škrob, regulátor kyslosti kyselina citrónová, farbivo meďnaté komplexy chlorofylu a chlorofylínu, wasabi 0,003%",
+      origin: "Čína",
+      storage: "Skladujte v suchu a tme",
+      values: []
+    },
+    cvikla: {
+      composition: "hrachová múka, slnečnicový olej, sušená červená repa 7,5%, sušené zemiaky, himalájska soľ",
+      origin: "Česká republika",
+      storage: "Skladujte v suchu a tme",
+      values: []
+    },
+    chia: {
+      composition: "hrachová múka, slnečnicový olej, sušené zemiaky, chia semienka 5,4%, himalájska soľ, rozmarín 1%",
+      origin: "Česká republika",
+      storage: "Skladujte v suchu a tme",
+      values: []
+    },
+    sezam: {
+      composition: "hrachová múka, sezam 8%, slnečnicový olej, himalájska soľ",
+      origin: "Česká republika",
+      storage: "Skladujte v suchu a tme",
+      values: []
+    },
+    lan: {
+      composition: "pšeničná múka T850, pšeničná múka T500, slnečnicový olej, celozrnná ovsená múka 4%, kukuričná krupica, celozrnná pšeničná múka 2,8%, soľ, ľanové semienko, kypriaci prostriedok (kukuričný škrob, hydrogenuhličitan sodný, difosforečnan disodný), extrakt z korenia",
+      origin: "Srbsko",
+      storage: "Skladujte v suchu, mimo priameho slnečného žiarenia",
+      values: []
+    },
+    soja: {
+      composition: "sója, soľ, slnečnicový olej, repkový olej",
+      origin: "Slovenská republika",
+      storage: "Skladujte v suchu a chráňte pred účinkami slnka a mrazu",
+      values: [
+        { label: "Energia", value: "1629 kJ / 389 kcal" },
+        { label: "Tuky", value: "17 g" },
+        { label: "z toho nasýtené mastné kyseliny", value: "3 g" },
+        { label: "Sacharidy", value: "29 g" },
+        { label: "z toho cukry", value: "8 g" },
+        { label: "Bielkoviny", value: "33 g" },
+        { label: "Soľ", value: "1 g" }
+      ]
+    },
+    mix: {
+      composition: "kešu na sucho pražené solené (kešu orechy pražené 98,5%, soľ 1%, emulgátor arabská guma); arašidy pizza (arašidy lúpané pražené 75%, pšeničná múka, zemiakový škrob, pizza korenie 3%: srvátkový prášok, cukor, soľ, paradajkový prášok, zvýrazňovač chuti L-glutaman sodný, kvasnicový extrakt, bazalka, oregano, petržlen, príchuť, cesnakový prášok, syrový prášok, čierne korenie, farbivo paprikový extrakt; slnečnicový olej, kypriaci prostriedok uhličitan sodný, soľ, cesnak, cukor); mandle udené (mandle 90,9%, slnečnicový olej, udený prášok 3,6%: dymová aróma, soľ, dextróza, repkový olej, maltodextrín, protispékavá látka oxid kremičitý, zvlhčujúca látka mliečnan vápenatý, emulgátor arabská guma); arašidy wasabi (arašidy lúpané pražené 27,5%, pšeničná múka, cukor, kukuričný škrob, kukuričná múka, kokosový olej, soľ, sójová omáčka v prášku, korenie, kypriaca látka uhličitan sodný, zemiakový škrob, regulátor kyslosti kyselina citrónová, farbivo meďnaté komplexy chlorofylu a chlorofylínu, wasabi 0,003%)",
+      origin: "Česká republika",
+      storage: "Skladujte v suchu, mimo priameho slnečného žiarenia",
+      values: []
+    },
+    zeler: {
+      composition: "zelená reďkovka 18%, mrkva 17%, slnečnicový olej 15%, batáty 12%, tekvica 10%, červená repa 8%, fialové zemiaky 7%, taro 5%, sladový cukor 4%, zelené fazuľky 1%, soľ 1%",
+      origin: "Čína",
+      storage: "Skladujte v suchu a tme. Chráňte pred priamym slnečným žiarením",
+      values: [
+        { label: "Energia", value: "2175 kJ / 520 kcal" },
+        { label: "Tuky", value: "30,5 g" },
+        { label: "z toho nasýtené mastné kyseliny", value: "3,3 g" },
+        { label: "Sacharidy", value: "54,5 g" },
+        { label: "z toho cukry", value: "35,5 g" },
+        { label: "Vláknina", value: "8,6 g" },
+        { label: "Bielkoviny", value: "2,8 g" },
+        { label: "Soľ", value: "0,54 g" }
+      ]
     }
   };
 }
